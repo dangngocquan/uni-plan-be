@@ -7,6 +7,7 @@ import ormconfig from './config/ormconfig';
 import { CacheModule } from '@nestjs/cache-manager';
 import { MailModule } from './modules/mail/mail.module';
 import { UsersModule } from './modules/users/users.module';
+import { SchoolModule } from './modules/school/school.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { UsersModule } from './modules/users/users.module';
     }),
     MailModule,
     UsersModule,
+    SchoolModule,
   ],
   controllers: [AppController],
   providers: [AppService],
