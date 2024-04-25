@@ -18,11 +18,11 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "typeorm": "ts-node ./node_modules/typeorm/cli",
-    "migration:run": "npm run build && npm run typeorm migration:run -- -d ./src/config/ormconfig.ts",
-    "migration:generate": "npm run build && npm run typeorm -- -d ./src/config/ormconfig.ts migration:generate ./src/migrations/$npm_config_name", 
-    "migration:create": "npm run typeorm -- migration:create ./src/migrations/$npm_config_name",
-    "migration:revert": "npm run typeorm -- -d ./src/config/ormconfig.ts migration:revert"
+    "typeorm": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli -d ./src/configs/ormconfig.ts",
+    "migration:create": "cross-var ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli migration:create ./src/migrations/$npm_config_name",
+    "migration:generate": "cross-var npm run typeorm -- migration:generate ./src/migrations/$npm_config_name",
+    "migration:run": "npm run build && npm run typeorm -- migration:run",
+    "migration:revert": "npm run typeorm -- migration:revert"
   },
   "dependencies": {
     "@nestjs-modules/mailer": "^1.10.3",
@@ -36,6 +36,7 @@
     "@nestjs/typeorm": "^10.0.2",
     "bcrypt": "^5.1.1",
     "cache-manager": "^5.5.1",
+    "cross-var": "^1.1.0",
     "dotenv": "^16.4.5",
     "google-auth-library": "^9.9.0",
     "nestjs-typeorm-paginate": "^4.0.4",
