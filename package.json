@@ -25,6 +25,7 @@
     "migration:revert": "npm run typeorm -- migration:revert"
   },
   "dependencies": {
+    "@google/generative-ai": "^0.8.0",
     "@nestjs-modules/mailer": "^1.10.3",
     "@nestjs/cache-manager": "^2.2.2",
     "@nestjs/common": "^10.0.0",
@@ -41,6 +42,7 @@
     "google-auth-library": "^9.9.0",
     "nestjs-typeorm-paginate": "^4.0.4",
     "nodemailer": "^6.9.13",
+    "openai": "^4.38.5",
     "pg": "^8.11.5",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.8.1",
