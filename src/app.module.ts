@@ -3,9 +3,10 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import ormconfig from './configs/ormconfig';
+import ormconfig from './config/ormconfig';
 import { CacheModule } from '@nestjs/cache-manager';
 import { MailModule } from './modules/mail/mail.module';
+import { UsersModule } from './modules/users/users.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { MailModule } from './modules/mail/mail.module';
       max: 100, // maximum number of items in cache
     }),
     MailModule,
+    UsersModule,
   ],
   controllers: [AppController],
   providers: [AppService],
