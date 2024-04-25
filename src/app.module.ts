@@ -8,6 +8,7 @@ import { CacheModule } from '@nestjs/cache-manager';
 import { MailModule } from './modules/mail/mail.module';
 import { UsersModule } from './modules/users/users.module';
 import { SchoolModule } from './modules/school/school.module';
+import { MajorModule } from './modules/major/major.module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { SchoolModule } from './modules/school/school.module';
     MailModule,
     UsersModule,
     SchoolModule,
+    MajorModule,
   ],
   controllers: [AppController],
   providers: [AppService],
