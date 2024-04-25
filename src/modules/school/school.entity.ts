@@ -1,5 +1,6 @@
 import { UUID } from 'crypto';
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { MajorEntity } from '../major/major.entity';
 
 @Entity({ name: 'school' })
 export class SchoolEntity {
@@ -13,4 +14,7 @@ export class SchoolEntity {
     nullable: true,
   })
   name: string;
+
+  @OneToMany(() => MajorEntity, (major) => major.school)
+  majors: MajorEntity[];
 }
