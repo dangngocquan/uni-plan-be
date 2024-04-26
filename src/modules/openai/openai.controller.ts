@@ -7,7 +7,7 @@ import { ReqChatCompletionDto } from './dto/req.chat-completion.dto';
 export class OpenAIController {
   constructor(private readonly openAIService: OpenAIService) {}
 
-  @Post('chat-completion')
+  @Post('chat/completions')
   async chatCompletion(
     @Body() dto: ReqChatCompletionDto,
   ): Promise<OpenAI.Chat.Completions.ChatCompletion> {
