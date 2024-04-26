@@ -9,6 +9,8 @@ import { MailModule } from './modules/mail/mail.module';
 import { UsersModule } from './modules/users/users.module';
 import { SchoolModule } from './modules/school/school.module';
 import { MajorModule } from './modules/major/major.module';
+import { OpenAIModule } from './modules/openai/openai.module';
+import { GoogleAIModule } from './modules/google-ai/googleai.module';
 
 @Module({
   imports: [
@@ -30,6 +32,8 @@ import { MajorModule } from './modules/major/major.module';
     UsersModule,
     SchoolModule,
     MajorModule,
+    OpenAIModule,
+    GoogleAIModule,
   ],
   controllers: [AppController],
   providers: [AppService],
