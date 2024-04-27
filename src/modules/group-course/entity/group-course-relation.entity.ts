@@ -18,17 +18,17 @@ export class GroupCourseRelationEntity {
   })
   parentGroupId: UUID;
 
-  @ManyToOne(() => GroupCourseEntity, (group) => group.children, {
-    onDelete: 'CASCADE',
-    onUpdate: 'CASCADE',
-  })
-  @JoinColumn({ name: 'group_id' })
-  parentGroup: GroupCourseEntity;
-
   @ManyToOne(() => GroupCourseEntity, (group) => group.parents, {
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE',
   })
-  @JoinColumn({ name: 'parent_group_id' })
+  @JoinColumn({ name: 'group_id' })
   childGroup: GroupCourseEntity;
+
+  @ManyToOne(() => GroupCourseEntity, (group) => group.children, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
+  @JoinColumn({ name: 'parent_group_id' })
+  parentGroup: GroupCourseEntity;
 }

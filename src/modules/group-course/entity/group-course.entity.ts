@@ -2,6 +2,7 @@ import { UUID } from 'crypto';
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { GroupCourseType } from '../group-course.enum';
 import { GroupCourseRelationEntity } from './group-course-relation.entity';
+import { CourseEntity } from 'src/modules/course/entity/course.entity';
 
 @Entity({ name: 'group_course' })
 export class GroupCourseEntity {
@@ -61,11 +62,14 @@ export class GroupCourseEntity {
   description: string;
 
   @OneToMany(() => GroupCourseRelationEntity, (relation) => relation.childGroup)
-  children: GroupCourseRelationEntity[];
+  parents: GroupCourseRelationEntity[];
 
   @OneToMany(
     () => GroupCourseRelationEntity,
     (relation) => relation.parentGroup,
   )
-  parents: GroupCourseRelationEntity[];
+  children: GroupCourseRelationEntity[];
+
+  @OneToMany(() => CourseEntity, (course) => course.group)
+  courses: CourseEntity[];
 }
