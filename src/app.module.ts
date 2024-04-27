@@ -9,8 +9,9 @@ import { MailModule } from './modules/mail/mail.module';
 import { UsersModule } from './modules/users/users.module';
 import { SchoolModule } from './modules/school/school.module';
 import { MajorModule } from './modules/major/major.module';
-import { OpenAIModule } from './modules/openai/openai.module';
-import { GoogleAIModule } from './modules/google-ai/googleai.module';
+// import { OpenAIModule } from './modules/openai/openai.module';
+// import { GoogleAIModule } from './modules/google-ai/googleai.module';
+import { GroupCourseModule } from './modules/group-course/group-course.module';
 
 @Module({
   imports: [
@@ -32,8 +33,9 @@ import { GoogleAIModule } from './modules/google-ai/googleai.module';
     UsersModule,
     SchoolModule,
     MajorModule,
-    OpenAIModule,
-    GoogleAIModule,
+    // OpenAIModule,
+    // GoogleAIModule,
+    GroupCourseModule,
   ],
   controllers: [AppController],
   providers: [AppService],
