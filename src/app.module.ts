@@ -12,6 +12,7 @@ import { MajorModule } from './modules/major/major.module';
 // import { OpenAIModule } from './modules/openai/openai.module';
 // import { GoogleAIModule } from './modules/google-ai/googleai.module';
 import { GroupCourseModule } from './modules/group-course/group-course.module';
+import { CourseModule } from './modules/course/course.module';
 
 @Module({
   imports: [
@@ -36,6 +37,7 @@ import { GroupCourseModule } from './modules/group-course/group-course.module';
     // OpenAIModule,
     // GoogleAIModule,
     GroupCourseModule,
+    CourseModule,
   ],
   controllers: [AppController],
   providers: [AppService],
