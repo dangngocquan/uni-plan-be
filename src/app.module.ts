@@ -13,6 +13,7 @@ import { MajorModule } from './modules/major/major.module';
 // import { GoogleAIModule } from './modules/google-ai/googleai.module';
 import { GroupCourseModule } from './modules/group-course/group-course.module';
 import { CourseModule } from './modules/course/course.module';
+import { GradeConversionModule } from './modules/grade-conversion/grade-conversion.module';
 
 @Module({
   imports: [
@@ -38,6 +39,7 @@ import { CourseModule } from './modules/course/course.module';
     // GoogleAIModule,
     GroupCourseModule,
     CourseModule,
+    GradeConversionModule,
   ],
   controllers: [AppController],
   providers: [AppService],
