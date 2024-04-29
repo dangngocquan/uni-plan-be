@@ -25,14 +25,14 @@ export class GradeConversionEntity {
     type: 'float8',
     nullable: true,
   })
-  fourTenPointGrade: number;
+  fourPointGrade: number;
 
   @Column({
     name: 'letter_grade',
     type: 'varchar',
     nullable: true,
   })
-  letterGrade: number;
+  letterGrade: string;
 
   @Column({
     name: 'conversion_table_id',
