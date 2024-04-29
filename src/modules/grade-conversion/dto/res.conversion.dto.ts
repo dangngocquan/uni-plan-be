@@ -5,7 +5,13 @@ export class ResGradeConversionDto {
   id: string;
 
   @ApiProperty()
-  minTenPointGrade: number;
+  fromTenPointGrade: number;
+
+  @ApiProperty()
+  toTenPointGrade: number;
+
+  @ApiProperty()
+  labelTenPointGrade: string;
 
   @ApiProperty()
   fourPointGrade: number;

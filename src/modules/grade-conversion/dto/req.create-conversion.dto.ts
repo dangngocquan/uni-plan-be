@@ -4,7 +4,15 @@ import { IsNumber, IsString } from 'class-validator';
 export class ReqCreateGradeConversionDto {
   @ApiProperty()
   @IsNumber()
-  minTenPointGrade: number;
+  fromTenPointGrade: number;
+
+  @ApiProperty()
+  @IsNumber()
+  toTenPointGrade: number;
+
+  @ApiProperty()
+  @IsString()
+  labelTenPointGrade: string;
 
   @ApiProperty()
   @IsNumber()
