@@ -13,10 +13,10 @@ import { GradeConversionService } from './grade-conversion.service';
 import { ReqCreateGradeConversionTableDto } from './dto/req.create-table.dto';
 import { ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { ResGradeConversionTableDto } from './dto/res.conversion-table.dto';
-import { PaginationOptionsDto } from 'src/modules/pagination/pagination.option.dto';
-import { PaginationConversionTableDto } from './dto/res.page.conversion.table.dto';
 import { UUID } from 'crypto';
-import { ResDeleteResultDto } from 'src/shared/dto/response/res.delete-result.dto';
+import { PaginationConversionTableDto } from './dto/res.page.conversion.table.dto';
+import { PaginationOptionsDto } from 'shared/dto/pagination/pagination.option.dto';
+import { ResDeleteResultDto } from 'shared/dto/response/res.delete-result.dto';
 
 @Controller('grade-conversion')
 @ApiTags('grade-conversion')
