@@ -7,7 +7,7 @@ import { ReqCreateGradeConversionTableDto } from './dto/req.create-table.dto';
 import { ResGradeConversionTableDto } from './dto/res.conversion-table.dto';
 import { plainToClass } from 'class-transformer';
 import { paginate } from 'nestjs-typeorm-paginate';
-import { PaginationOptionsDto } from 'src/shared/dto/pagination/pagination.option.dto';
+import { PaginationOptionsDto } from 'src/modules/pagination/pagination.option.dto';
 import { PaginationConversionTableDto } from './dto/res.page.conversion-table.dto';
 import { UUID } from 'crypto';
 import { ResDeleteResultDto } from 'src/shared/dto/response/res.delete-result.dto';
