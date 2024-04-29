@@ -1,6 +1,7 @@
 import { ApiPropertyOptional } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
 import { OrderType } from './order.enum';
+import { IsNumber, IsString } from 'class-validator';
 
 export class PaginationOptionsDto {
   @ApiPropertyOptional({
@@ -8,6 +9,7 @@ export class PaginationOptionsDto {
     enum: OrderType,
     // default: OrderType.DESC,
   })
+  @IsString()
   readonly order: OrderType = OrderType.DESC;
 
   @ApiPropertyOptional({
@@ -15,6 +17,7 @@ export class PaginationOptionsDto {
     // default: 1,
   })
   @Transform(({ value }) => value || 1)
+  @IsNumber()
   readonly page: number = 1;
 
   @ApiPropertyOptional({
@@ -22,6 +25,7 @@ export class PaginationOptionsDto {
     // default: 10,
   })
   @Transform(({ value }) => value || 10)
+  @IsNumber()
   readonly limit: number = 10;
 
   get skip(): number {
