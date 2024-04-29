@@ -1,8 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { ResGradeConversionTableDto } from './res.conversion-table.dto';
-import { PaginationDto } from 'src/modules/pagination/pagination0.dto';
+import { Pagination0Dto } from 'src/modules/pagination/pagination0.dto';
 
-export class PaginationConversionTableDto extends PaginationDto {
+export class PaginationConversionTableDto extends Pagination0Dto {
   @ApiProperty({
     isArray: true,
     type: ResGradeConversionTableDto,

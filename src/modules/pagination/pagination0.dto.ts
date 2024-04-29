@@ -2,7 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { PaginationLinkDto } from './links.dto';
 import { PaginationMetaDto } from './meta.dto';
 
-export class PaginationDto {
+export class Pagination0Dto {
   @ApiProperty({
     type: PaginationMetaDto,
   })
