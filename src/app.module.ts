@@ -3,9 +3,17 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import ormconfig from './configs/ormconfig';
+import ormconfig from './config/ormconfig';
 import { CacheModule } from '@nestjs/cache-manager';
 import { MailModule } from './modules/mail/mail.module';
+import { UsersModule } from './modules/users/users.module';
+import { SchoolModule } from './modules/school/school.module';
+import { MajorModule } from './modules/major/major.module';
+// import { OpenAIModule } from './modules/openai/openai.module';
+// import { GoogleAIModule } from './modules/google-ai/googleai.module';
+import { GroupCourseModule } from './modules/group-course/group-course.module';
+import { CourseModule } from './modules/course/course.module';
+import { GradeConversionModule } from './modules/grade-conversion/grade-conversion.module';
 
 @Module({
   imports: [
@@ -24,6 +32,14 @@ import { MailModule } from './modules/mail/mail.module';
       max: 100, // maximum number of items in cache
     }),
     MailModule,
+    UsersModule,
+    SchoolModule,
+    MajorModule,
+    // OpenAIModule,
+    // GoogleAIModule,
+    GroupCourseModule,
+    CourseModule,
+    GradeConversionModule,
   ],
   controllers: [AppController],
   providers: [AppService],
