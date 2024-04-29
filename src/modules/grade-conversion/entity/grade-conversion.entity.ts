@@ -14,11 +14,25 @@ export class GradeConversionEntity {
   id: UUID;
 
   @Column({
-    name: 'min_ten_point_grade',
+    name: 'from_ten_point_grade',
     type: 'float8',
     nullable: true,
   })
-  minTenPointGrade: number;
+  fromTenPointGrade: number;
+
+  @Column({
+    name: 'to_ten_point_grade',
+    type: 'float8',
+    nullable: true,
+  })
+  toTenPointGrade: number;
+
+  @Column({
+    name: 'label_ten_point_grade',
+    type: 'varchar',
+    nullable: true,
+  })
+  labelTenPointGrade: string;
 
   @Column({
     name: 'four_point_grade',

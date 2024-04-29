@@ -31,7 +31,9 @@ export class GradeConversionService {
     const gradeConversionEntities = dto.gradeConversions.map(
       (gradeConversion) =>
         this.gradeConversionRepository.create({
-          minTenPointGrade: gradeConversion.minTenPointGrade,
+          fromTenPointGrade: gradeConversion.fromTenPointGrade,
+          toTenPointGrade: gradeConversion.toTenPointGrade,
+          labelTenPointGrade: gradeConversion.labelTenPointGrade,
           fourPointGrade: gradeConversion.fourPointGrade,
           letterGrade: gradeConversion.letterGrade,
           conversionTableId: tableEntity.id,
@@ -60,6 +62,7 @@ export class GradeConversionService {
     tableId: UUID,
     dto: ReqCreateGradeConversionTableDto,
   ): Promise<ReqCreateGradeConversionTableDto> {
+    // Find grade conversion table
     const tableEntity = await this.gradeConversionTableRepository
       .createQueryBuilder('table')
       .where(`table.id = '${tableId}'`)
@@ -69,18 +72,25 @@ export class GradeConversionService {
         describe: 'Table not found.',
       });
     }
+    // Update grade conversion table
     tableEntity.name = dto.name;
+    await this.gradeConversionTableRepository.save(tableEntity);
+
+    // Delete old grade conversions
     const gradeConversionQueryBuilder =
-      this.gradeConversionRepository.createQueryBuilder('conversion');
+      this.gradeConversionRepository.createQueryBuilder();
     await gradeConversionQueryBuilder
       .delete()
       .from(GradeConversionEntity)
-      .where(`conversion.tableId = '${tableId}'`)
+      .where(`conversionTableId = '${tableId}'`)
       .execute();
+    // Insert new grade conversions
     const gradeConversionEntities = dto.gradeConversions.map(
       (gradeConversion) =>
         this.gradeConversionRepository.create({
-          minTenPointGrade: gradeConversion.minTenPointGrade,
+          fromTenPointGrade: gradeConversion.fromTenPointGrade,
+          toTenPointGrade: gradeConversion.toTenPointGrade,
+          labelTenPointGrade: gradeConversion.labelTenPointGrade,
           fourPointGrade: gradeConversion.fourPointGrade,
           letterGrade: gradeConversion.letterGrade,
           conversionTableId: tableEntity.id,
