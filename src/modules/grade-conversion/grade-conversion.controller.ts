@@ -15,8 +15,8 @@ import { ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { ResGradeConversionTableDto } from './dto/res.conversion-table.dto';
 import { UUID } from 'crypto';
 import { PaginationConversionTableDto } from './dto/res.page.conversion.table.dto';
-import { PaginationOptionsDto } from 'shared/dto/pagination/pagination.option.dto';
-import { ResDeleteResultDto } from 'shared/dto/response/res.delete-result.dto';
+import { PaginationOptionsDto } from 'src/shared/dto/pagination/pagination.option.dto';
+import { ResDeleteResultDto } from 'src/shared/dto/response/res.delete-result.dto';
 
 @Controller('grade-conversion')
 @ApiTags('grade-conversion')
