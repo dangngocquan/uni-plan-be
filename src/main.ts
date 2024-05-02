@@ -9,7 +9,7 @@ dotenvConfig({ path: '.env' });
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.setGlobalPrefix('api', {
-    exclude: ['/health'],
+    exclude: [''],
   });
 
   const config = new DocumentBuilder()
