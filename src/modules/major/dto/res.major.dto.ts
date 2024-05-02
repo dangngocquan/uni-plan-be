@@ -1,10 +1,13 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { UUID } from 'crypto';
 
-export class ResSchoolDto {
+export class ResMajorDto {
   @ApiProperty()
-  id: UUID;
+  id: string;
 
   @ApiProperty()
   name: string;
+
+  @ApiProperty()
+  schoolId: UUID;
 }
