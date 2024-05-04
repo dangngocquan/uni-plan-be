@@ -23,9 +23,10 @@ export class MajorService {
   ) {}
 
   async get(dto: PageOptionMajorDto): Promise<PaginationMajorDto> {
-    const queryBuider = this.majorRepository
-      .createQueryBuilder('major')
-      .where(`major.schoolId = '${dto.schoolId}'`);
+    const queryBuider = this.majorRepository.createQueryBuilder('major');
+    if (dto.schoolId) {
+      queryBuider.where(`major.schoolId = '${dto.schoolId}'`);
+    }
     const { items, meta, links } = await paginate(queryBuider, {
       page: dto.page,
       limit: dto.limit,
