@@ -4,9 +4,11 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { SchoolEntity } from '../school/school.entity';
+import { GroupCourseEntity } from '../group-course/entity/group-course.entity';
 
 @Entity({ name: 'major' })
 export class MajorEntity {
@@ -32,4 +34,7 @@ export class MajorEntity {
   })
   @JoinColumn({ name: 'school_id' })
   school: SchoolEntity;
+
+  @OneToMany(() => GroupCourseEntity, (group) => group.major)
+  groupCourses: GroupCourseEntity[];
 }

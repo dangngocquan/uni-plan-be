@@ -1,8 +1,16 @@
 import { UUID } from 'crypto';
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { GroupCourseType } from '../group-course.enum';
 import { GroupCourseRelationEntity } from './group-course-relation.entity';
 import { CourseEntity } from '../../course/entity/course.entity';
+import { MajorEntity } from '../../major/major.entity';
 
 @Entity({ name: 'group_course' })
 export class GroupCourseEntity {
@@ -14,36 +22,37 @@ export class GroupCourseEntity {
     type: 'varchar',
     length: 255,
     nullable: true,
+    enum: GroupCourseType,
   })
-  type: GroupCourseType;
+  type?: GroupCourseType;
 
   @Column({
     name: 'min_credits',
     type: 'bigint',
     nullable: true,
   })
-  minCreadits: number | null;
+  minCredits?: number | null;
 
   @Column({
     name: 'min_courses',
     type: 'bigint',
     nullable: true,
   })
-  minCourses: number | null;
+  minCourses?: number | null;
 
   @Column({
     name: 'min_groups',
     type: 'bigint',
     nullable: true,
   })
-  minGroups: number | null;
+  minGroups?: number | null;
 
   @Column({
     name: 'major_id',
     type: 'uuid',
     nullable: false,
   })
-  majorId: UUID;
+  majorId?: UUID;
 
   @Column({
     name: 'title',
@@ -51,7 +60,7 @@ export class GroupCourseEntity {
     length: 255,
     nullable: true,
   })
-  title: string;
+  title?: string;
 
   @Column({
     name: 'description',
@@ -59,17 +68,24 @@ export class GroupCourseEntity {
     length: 255,
     nullable: true,
   })
-  description: string;
+  description?: string;
 
   @OneToMany(() => GroupCourseRelationEntity, (relation) => relation.childGroup)
-  parents: GroupCourseRelationEntity[];
+  relationParents: GroupCourseRelationEntity[];
 
   @OneToMany(
     () => GroupCourseRelationEntity,
     (relation) => relation.parentGroup,
   )
-  children: GroupCourseRelationEntity[];
+  relationChildren: GroupCourseRelationEntity[];
 
   @OneToMany(() => CourseEntity, (course) => course.group)
   courses: CourseEntity[];
+
+  @ManyToOne(() => MajorEntity, (major) => major.groupCourses, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
+  @JoinColumn({ name: 'major_id' })
+  major: MajorEntity;
 }
