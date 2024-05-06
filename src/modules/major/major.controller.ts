@@ -18,6 +18,7 @@ import { ReqCreateMajorDto } from './dto/req.create-major.dto';
 import { ReqUpdateMajorDto } from './dto/req.update-major.dto';
 import { ResDeleteResultDto } from '../../shared/dto/response/res.delete-result.dto';
 import { PageOptionMajorDto } from './dto/req.page-option.major.dto';
+import { ResMajorDetailDto } from './dto/res.major-detail.dto';
 
 @Controller('major')
 @ApiTags('major')
@@ -61,5 +62,14 @@ export class MajorController {
   })
   async delete(@Param('majorId', ParseUUIDPipe) majorId: UUID) {
     return this.majorService.delete(majorId);
+  }
+
+  @Get('detail/:majorId')
+  @ApiOkResponse({
+    description: 'Get details of a major',
+    type: ResMajorDetailDto,
+  })
+  async getDetails(@Param('majorId', ParseUUIDPipe) majorId: UUID) {
+    return this.majorService.getDetails(majorId);
   }
 }
