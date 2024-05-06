@@ -14,9 +14,15 @@ import { MajorModule } from './modules/major/major.module';
 import { GroupCourseModule } from './modules/group-course/group-course.module';
 import { CourseModule } from './modules/course/course.module';
 import { GradeConversionModule } from './modules/grade-conversion/grade-conversion.module';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 
 @Module({
   imports: [
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'swagger-static'),
+      serveRoot: process.env.NODE_ENV === 'development' ? '/' : '/swagger',
+    }),
     ConfigModule.forRoot({
       isGlobal: true,
       load: [ormconfig],
