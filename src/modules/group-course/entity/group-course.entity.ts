@@ -71,13 +71,13 @@ export class GroupCourseEntity {
   description?: string;
 
   @OneToMany(() => GroupCourseRelationEntity, (relation) => relation.childGroup)
-  parents: GroupCourseRelationEntity[];
+  relationParents: GroupCourseRelationEntity[];
 
   @OneToMany(
     () => GroupCourseRelationEntity,
     (relation) => relation.parentGroup,
   )
-  children: GroupCourseRelationEntity[];
+  relationChildren: GroupCourseRelationEntity[];
 
   @OneToMany(() => CourseEntity, (course) => course.group)
   courses: CourseEntity[];

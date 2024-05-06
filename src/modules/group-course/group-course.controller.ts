@@ -18,6 +18,9 @@ import { ReqCreateGroupCourseDto } from './dto/req.create-group-course.dto';
 import { UUID } from 'crypto';
 import { ReqUpdateGroupCourseDto } from './dto/req.update-group-course.dto';
 import { ResDeleteResultDto } from '../../shared/dto/response/res.delete-result.dto';
+import { ResGroupRelationDto } from './dto/res.group-relation.dto';
+import { ReqCreateGroupRelationDto } from './dto/req.create-group-relation.dto';
+import { ResGroupCourseDetailDto } from './dto/res.group-course-detail.dto';
 
 @Controller('group-course')
 @ApiTags('group-course')
@@ -65,5 +68,27 @@ export class GroupCourseController {
   })
   async delete(@Param('groupId', ParseUUIDPipe) groupId: UUID) {
     return this.groupCourseService.delete(groupId);
+  }
+
+  @Post('relation')
+  @ApiCreatedResponse({
+    description: 'Create a new group relation',
+    type: ResGroupRelationDto,
+  })
+  async addRelation(
+    @Body() dto: ReqCreateGroupRelationDto,
+  ): Promise<ResGroupRelationDto> {
+    return this.groupCourseService.addRelation(dto);
+  }
+
+  @Get('details/:groupId')
+  @ApiOkResponse({
+    description: 'Get group course details',
+    type: ResGroupCourseDetailDto,
+  })
+  async getGroupCourseDetails(
+    @Param('groupId', ParseUUIDPipe) groupId: UUID,
+  ): Promise<ResGroupCourseDetailDto> {
+    return this.groupCourseService.getGroupDetails(groupId);
   }
 }

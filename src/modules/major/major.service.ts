@@ -12,6 +12,8 @@ import { ReqUpdateMajorDto } from './dto/req.update-major.dto';
 import { ResDeleteResultDto } from '../../shared/dto/response/res.delete-result.dto';
 import { SchoolEntity } from '../school/school.entity';
 import { PageOptionMajorDto } from './dto/req.page-option.major.dto';
+import { ResMajorDetailDto } from './dto/res.major-detail.dto';
+import { GroupCourseService } from '../group-course/group-course.service';
 
 @Injectable()
 export class MajorService {
@@ -20,6 +22,7 @@ export class MajorService {
     private readonly majorRepository: Repository<MajorEntity>,
     @InjectRepository(SchoolEntity)
     private readonly schoolRepository: Repository<SchoolEntity>,
+    private readonly groupCourseService: GroupCourseService,
   ) {}
 
   async get(dto: PageOptionMajorDto): Promise<PaginationMajorDto> {
@@ -71,5 +74,26 @@ export class MajorService {
   async delete(majorId: UUID): Promise<ResDeleteResultDto> {
     const result = await this.majorRepository.delete(majorId);
     return plainToClass(ResDeleteResultDto, result);
+  }
+
+  async getDetails(majorId: UUID): Promise<ResMajorDetailDto> {
+    const queryBuider = this.majorRepository
+      .createQueryBuilder('major')
+      .where(`major.id = '${majorId}'`)
+      .leftJoinAndSelect(`major.groupCourses`, 'groupCourses');
+    const entity = await queryBuider.getOne();
+    if (!entity) {
+      throw new NotFoundException({
+        message: 'Major not found',
+      });
+    }
+    const dto = plainToClass(ResMajorDetailDto, entity);
+    for (const groupCourse of dto.groupCourses) {
+      dto.groupCourses.push(
+        await this.groupCourseService.getGroupDetails(groupCourse.id),
+      );
+      dto.groupCourses.shift();
+    }
+    return dto;
   }
 }

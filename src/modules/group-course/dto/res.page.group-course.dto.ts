@@ -5,7 +5,7 @@ import { ResGroupCourseDto } from './res.group-course.dto';
 export class PaginationGroupCourseDto extends PaginationDto {
   @ApiProperty({
     isArray: true,
-    type: ResGroupCourseDto,
+    type: () => ResGroupCourseDto,
   })
   items: ResGroupCourseDto[];
 

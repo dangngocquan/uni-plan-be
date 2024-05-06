@@ -1,4 +1,4 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { GroupCourseType } from '../group-course.enum';
 import { IsNumber, IsUUID } from 'class-validator';
 import { UUID } from 'crypto';
@@ -40,4 +40,10 @@ export class ReqCreateGroupCourseDto {
     nullable: true,
   })
   description: string;
+
+  @ApiPropertyOptional({
+    nullable: true,
+    example: 'null | string',
+  })
+  parentGroupId: null | UUID;
 }
