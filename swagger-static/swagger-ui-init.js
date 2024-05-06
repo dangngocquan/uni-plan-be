@@ -631,6 +631,220 @@ window.onload = function() {
           ]
         }
       },
+      "/api/course": {
+        "get": {
+          "operationId": "CourseController_get",
+          "parameters": [
+            {
+              "name": "order",
+              "required": false,
+              "in": "query",
+              "schema": {
+                "nullable": true,
+                "enum": [
+                  "ASC",
+                  "DESC"
+                ],
+                "type": "string"
+              }
+            },
+            {
+              "name": "page",
+              "required": false,
+              "in": "query",
+              "schema": {
+                "nullable": true,
+                "type": "number"
+              }
+            },
+            {
+              "name": "limit",
+              "required": false,
+              "in": "query",
+              "schema": {
+                "nullable": true,
+                "type": "number"
+              }
+            },
+            {
+              "name": "q",
+              "required": false,
+              "in": "query",
+              "schema": {
+                "nullable": true,
+                "type": "string"
+              }
+            },
+            {
+              "name": "id",
+              "required": false,
+              "in": "query",
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "name": "code",
+              "required": false,
+              "in": "query",
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "name": "name",
+              "required": false,
+              "in": "query",
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "name": "credits",
+              "required": false,
+              "in": "query",
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "name": "groupId",
+              "required": false,
+              "in": "query",
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Get all courses",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/PaginationCourseDto"
+                  }
+                }
+              }
+            }
+          },
+          "tags": [
+            "course"
+          ]
+        },
+        "post": {
+          "operationId": "CourseController_create",
+          "parameters": [],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReqCreateCourseDto"
+                }
+              }
+            }
+          },
+          "responses": {
+            "201": {
+              "description": "Create a new course",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ResCourseDto"
+                  }
+                }
+              }
+            }
+          },
+          "tags": [
+            "course"
+          ]
+        }
+      },
+      "/api/course/{courseId}": {
+        "put": {
+          "operationId": "CourseController_update",
+          "parameters": [
+            {
+              "name": "courseId",
+              "required": true,
+              "in": "path",
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReqUpdateCourseDto"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Update a course",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ResCourseDto"
+                  }
+                }
+              }
+            }
+          },
+          "tags": [
+            "course"
+          ]
+        },
+        "delete": {
+          "operationId": "CourseController_delete",
+          "parameters": [
+            {
+              "name": "courseId",
+              "required": true,
+              "in": "path",
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Delete a course",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ResDeleteResultDto"
+                  }
+                }
+              }
+            }
+          },
+          "tags": [
+            "course"
+          ]
+        }
+      },
       "/api/grade-conversion/table": {
         "get": {
           "operationId": "GradeConversionController_getGradeConversionTables",
@@ -1247,6 +1461,111 @@ window.onload = function() {
           "required": [
             "group",
             "parentGroup"
+          ]
+        },
+        "ResCourseDto": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "code": {
+              "type": "string"
+            },
+            "name": {
+              "type": "string"
+            },
+            "credits": {
+              "type": "number"
+            },
+            "groupId": {
+              "type": "string"
+            },
+            "prereqCourseIds": {
+              "type": "array",
+              "items": {
+                "type": "array"
+              }
+            },
+            "prereqCourseCodes": {
+              "type": "array",
+              "items": {
+                "type": "array"
+              }
+            }
+          },
+          "required": [
+            "id",
+            "code",
+            "name",
+            "credits",
+            "groupId",
+            "prereqCourseIds",
+            "prereqCourseCodes"
+          ]
+        },
+        "PaginationCourseDto": {
+          "type": "object",
+          "properties": {
+            "meta": {
+              "$ref": "#/components/schemas/PaginationMetaDto"
+            },
+            "links": {
+              "$ref": "#/components/schemas/PaginationLinkDto"
+            },
+            "items": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/ResCourseDto"
+              }
+            }
+          },
+          "required": [
+            "meta",
+            "links",
+            "items"
+          ]
+        },
+        "ReqCreateCourseDto": {
+          "type": "object",
+          "properties": {
+            "code": {
+              "type": "string"
+            },
+            "name": {
+              "type": "string"
+            },
+            "credits": {
+              "type": "number"
+            },
+            "groupId": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "code",
+            "name",
+            "credits",
+            "groupId"
+          ]
+        },
+        "ReqUpdateCourseDto": {
+          "type": "object",
+          "properties": {
+            "code": {
+              "type": "string"
+            },
+            "name": {
+              "type": "string"
+            },
+            "credits": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "code",
+            "name",
+            "credits"
           ]
         },
         "ResGradeConversionDto": {
