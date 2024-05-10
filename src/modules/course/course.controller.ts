@@ -65,6 +65,10 @@ export class CourseController {
   }
 
   @Post(':courseId/relation')
+  @ApiOkResponse({
+    description: 'Add a prereq course',
+    type: ResCourseDto,
+  })
   async addPrereqCourse(
     @Param('courseId', ParseUUIDPipe) courseId: UUID,
     @Body() dto: ReqCreateCourseRelationDto,

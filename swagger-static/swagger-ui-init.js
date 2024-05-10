@@ -869,8 +869,15 @@ window.onload = function() {
             }
           },
           "responses": {
-            "201": {
-              "description": ""
+            "200": {
+              "description": "Add a prereq course",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ResCourseDto"
+                  }
+                }
+              }
             }
           },
           "tags": [
