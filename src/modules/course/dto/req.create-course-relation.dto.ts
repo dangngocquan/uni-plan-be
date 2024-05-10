@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsUUID } from 'class-validator';
+import { IsString, IsUUID } from 'class-validator';
 import { UUID } from 'crypto';
 
 export class ReqCreateCourseRelationDto {
@@ -8,6 +8,6 @@ export class ReqCreateCourseRelationDto {
   courseId: UUID;
 
   @ApiProperty()
-  @IsUUID()
-  prereqCourseId: UUID;
+  @IsString()
+  prereqCourseCode: string;
 }

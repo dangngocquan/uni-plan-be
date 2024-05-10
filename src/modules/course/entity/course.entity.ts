@@ -45,9 +45,6 @@ export class CourseEntity {
   @JoinColumn({ name: 'group_id' })
   group: GroupCourseEntity;
 
-  @OneToMany(() => CourseRelationEntity, (relation) => relation.dueToCourse)
-  prereqCourses: CourseRelationEntity[];
-
-  @OneToMany(() => CourseRelationEntity, (relation) => relation.prereqCourse)
-  dueToCourses: CourseRelationEntity[];
+  @OneToMany(() => CourseRelationEntity, (relation) => relation.course)
+  prereqCourseRelations: CourseRelationEntity[];
 }
