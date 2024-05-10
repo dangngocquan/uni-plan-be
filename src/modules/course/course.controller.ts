@@ -18,6 +18,7 @@ import { ReqCreateCourseDto } from './dto/req.create-course.dto';
 import { UUID } from 'crypto';
 import { ReqUpdateCourseDto } from './dto/req.update-course.dto';
 import { ResDeleteResultDto } from '../../shared/dto/response/res.delete-result.dto';
+import { ReqCreateCourseRelationDto } from './dto/req.create-course-relation.dto';
 
 @Controller('course')
 @ApiTags('course')
@@ -61,5 +62,13 @@ export class CourseController {
   })
   async delete(@Param('courseId', ParseUUIDPipe) courseId: UUID) {
     return this.courseService.delete(courseId);
+  }
+
+  @Post(':courseId/relation')
+  async addPrereqCourse(
+    @Param('courseId', ParseUUIDPipe) courseId: UUID,
+    @Body() dto: ReqCreateCourseRelationDto,
+  ): Promise<ResCourseDto> {
+    return this.courseService.addPrereqCourseCode(courseId, dto);
   }
 }

@@ -845,6 +845,39 @@ window.onload = function() {
           ]
         }
       },
+      "/api/course/{courseId}/relation": {
+        "post": {
+          "operationId": "CourseController_addPrereqCourse",
+          "parameters": [
+            {
+              "name": "courseId",
+              "required": true,
+              "in": "path",
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReqCreateCourseRelationDto"
+                }
+              }
+            }
+          },
+          "responses": {
+            "201": {
+              "description": ""
+            }
+          },
+          "tags": [
+            "course"
+          ]
+        }
+      },
       "/api/grade-conversion/table": {
         "get": {
           "operationId": "GradeConversionController_getGradeConversionTables",
@@ -1481,12 +1514,6 @@ window.onload = function() {
             "groupId": {
               "type": "string"
             },
-            "prereqCourseIds": {
-              "type": "array",
-              "items": {
-                "type": "array"
-              }
-            },
             "prereqCourseCodes": {
               "type": "array",
               "items": {
@@ -1500,7 +1527,6 @@ window.onload = function() {
             "name",
             "credits",
             "groupId",
-            "prereqCourseIds",
             "prereqCourseCodes"
           ]
         },
@@ -1566,6 +1592,21 @@ window.onload = function() {
             "code",
             "name",
             "credits"
+          ]
+        },
+        "ReqCreateCourseRelationDto": {
+          "type": "object",
+          "properties": {
+            "courseId": {
+              "type": "string"
+            },
+            "prereqCourseCode": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "courseId",
+            "prereqCourseCode"
           ]
         },
         "ResGradeConversionDto": {

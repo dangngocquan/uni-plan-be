@@ -1,29 +1,24 @@
-import { ApiProperty } from "@nestjs/swagger";
-import { UUID } from "crypto";
+import { ApiProperty } from '@nestjs/swagger';
+import { UUID } from 'crypto';
 
 export class ResCourseDto {
-    @ApiProperty()
-    id: UUID;
+  @ApiProperty()
+  id: UUID;
 
-    @ApiProperty()
-    code: string;
+  @ApiProperty()
+  code: string;
 
-    @ApiProperty()
-    name: string;
+  @ApiProperty()
+  name: string;
 
-    @ApiProperty()
-    credits: number;
+  @ApiProperty()
+  credits: number;
 
-    @ApiProperty()
-    groupId: UUID;
+  @ApiProperty()
+  groupId: UUID;
 
-    @ApiProperty({
-        isArray: true,
-    })
-    prereqCourseIds: UUID[];
-    
-    @ApiProperty({
-        isArray: true,
-    })
-    prereqCourseCodes: string[];
+  @ApiProperty({
+    isArray: true,
+  })
+  prereqCourseCodes: string[];
 }
