@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, RequestMethod } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -16,6 +16,9 @@ import { CourseModule } from './modules/course/course.module';
 import { GradeConversionModule } from './modules/grade-conversion/grade-conversion.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
+import { AuthMiddleware } from './modules/auth/middleware/auth.middleware';
+import { JwtModule } from '@nestjs/jwt';
+import { AuthModule } from './modules/auth/auth.module';
 
 @Module({
   imports: [
@@ -47,8 +50,20 @@ import { join } from 'path';
     GroupCourseModule,
     CourseModule,
     GradeConversionModule,
+    JwtModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer
+      .apply(AuthMiddleware)
+      .exclude(
+        { path: '', method: RequestMethod.GET },
+        { path: 'auth/(.*)', method: RequestMethod.POST },
+      )
+      .forRoutes('*');
+  }
+}

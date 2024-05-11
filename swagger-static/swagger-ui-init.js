@@ -869,8 +869,15 @@ window.onload = function() {
             }
           },
           "responses": {
-            "201": {
-              "description": ""
+            "200": {
+              "description": "Add a prereq course",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ResCourseDto"
+                  }
+                }
+              }
             }
           },
           "tags": [
@@ -1034,6 +1041,254 @@ window.onload = function() {
           },
           "tags": [
             "grade-conversion"
+          ]
+        }
+      },
+      "/api/auth/signup": {
+        "post": {
+          "operationId": "AuthController_signup",
+          "parameters": [],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReqSignUpDto"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "User sign up.",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ResMailDto"
+                  }
+                }
+              }
+            }
+          },
+          "tags": [
+            "auth"
+          ]
+        }
+      },
+      "/api/auth/verify-signup": {
+        "post": {
+          "operationId": "AuthController_verifySignup",
+          "parameters": [],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReqVerifyEmailDto"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Verify email when user sign up.",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ResTokenDto"
+                  }
+                }
+              }
+            }
+          },
+          "tags": [
+            "auth"
+          ]
+        }
+      },
+      "/api/auth/login": {
+        "post": {
+          "operationId": "AuthController_login",
+          "parameters": [],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReqLoginDto"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "User login.",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ResTokenDto"
+                  }
+                }
+              }
+            }
+          },
+          "tags": [
+            "auth"
+          ]
+        }
+      },
+      "/api/auth/refresh-token": {
+        "post": {
+          "operationId": "AuthController_refreshToken",
+          "parameters": [],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReqRefreshTokenDto"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Refresh token.",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ResTokenDto"
+                  }
+                }
+              }
+            }
+          },
+          "tags": [
+            "auth"
+          ]
+        }
+      },
+      "/api/auth/login-google": {
+        "post": {
+          "operationId": "AuthController_loginByGoogle",
+          "parameters": [],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReqGoogleTokenDto"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "User login by google.",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ResTokenDto"
+                  }
+                }
+              }
+            }
+          },
+          "tags": [
+            "auth"
+          ]
+        }
+      },
+      "/api/auth/signup-google": {
+        "post": {
+          "operationId": "AuthController_signupByGoogle",
+          "parameters": [],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReqGoogleTokenDto"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "User signup by google.",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ResTokenDto"
+                  }
+                }
+              }
+            }
+          },
+          "tags": [
+            "auth"
+          ]
+        }
+      },
+      "/api/auth/forgot-password": {
+        "post": {
+          "operationId": "AuthController_forgotPassword",
+          "parameters": [],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReqForgotPasswordDto"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Forget password.",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ResMailDto"
+                  }
+                }
+              }
+            }
+          },
+          "tags": [
+            "auth"
+          ]
+        }
+      },
+      "/api/auth/reset-password": {
+        "post": {
+          "operationId": "AuthController_resetPassword",
+          "parameters": [],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReqResetPasswordDto"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Reset password.",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ResTokenDto"
+                  }
+                }
+              }
+            }
+          },
+          "tags": [
+            "auth"
           ]
         }
       }
@@ -1731,6 +1986,137 @@ window.onload = function() {
           "required": [
             "name",
             "gradeConversions"
+          ]
+        },
+        "ReqSignUpDto": {
+          "type": "object",
+          "properties": {
+            "email": {
+              "type": "string"
+            },
+            "password": {
+              "type": "string"
+            },
+            "name": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "email",
+            "password",
+            "name"
+          ]
+        },
+        "ResMailDto": {
+          "type": "object",
+          "properties": {
+            "from": {
+              "type": "string"
+            },
+            "to": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "from",
+            "to"
+          ]
+        },
+        "ReqVerifyEmailDto": {
+          "type": "object",
+          "properties": {
+            "email": {
+              "type": "string"
+            },
+            "otp": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "email",
+            "otp"
+          ]
+        },
+        "ResTokenDto": {
+          "type": "object",
+          "properties": {
+            "accessToken": {
+              "type": "string"
+            },
+            "refreshToken": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "accessToken",
+            "refreshToken"
+          ]
+        },
+        "ReqLoginDto": {
+          "type": "object",
+          "properties": {
+            "email": {
+              "type": "string"
+            },
+            "password": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "email",
+            "password"
+          ]
+        },
+        "ReqRefreshTokenDto": {
+          "type": "object",
+          "properties": {
+            "refreshToken": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "refreshToken"
+          ]
+        },
+        "ReqGoogleTokenDto": {
+          "type": "object",
+          "properties": {
+            "idToken": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "idToken"
+          ]
+        },
+        "ReqForgotPasswordDto": {
+          "type": "object",
+          "properties": {
+            "email": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "email"
+          ]
+        },
+        "ReqResetPasswordDto": {
+          "type": "object",
+          "properties": {
+            "email": {
+              "type": "string"
+            },
+            "otp": {
+              "type": "string"
+            },
+            "newPassword": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "email",
+            "otp",
+            "newPassword"
           ]
         }
       }
