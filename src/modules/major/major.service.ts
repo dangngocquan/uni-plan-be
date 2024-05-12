@@ -88,11 +88,12 @@ export class MajorService {
       });
     }
     const dto = plainToClass(ResMajorDetailDto, entity);
-    for (const groupCourse of dto.groupCourses) {
-      dto.groupCourses.push(
-        await this.groupCourseService.getGroupDetails(groupCourse.id),
+    for (let i = 0; i < dto.groupCourses.length; i++) {
+      const groupCourse = dto.groupCourses[i];
+      const detailGroup = await this.groupCourseService.getGroupDetails(
+        groupCourse.id,
       );
-      dto.groupCourses.shift();
+      dto.groupCourses[i] = detailGroup;
     }
     return dto;
   }
