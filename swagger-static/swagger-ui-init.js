@@ -1680,14 +1680,6 @@ window.onload = function() {
         "ReqUpdateGroupCourseDto": {
           "type": "object",
           "properties": {
-            "type": {
-              "type": "string",
-              "enum": [
-                "ALL_SELECTION",
-                "SINGLE_SELECT",
-                "MULTIPLE_SELECTION"
-              ]
-            },
             "minCredits": {
               "type": "number",
               "nullable": true,
@@ -1713,7 +1705,6 @@ window.onload = function() {
             }
           },
           "required": [
-            "type",
             "minCredits",
             "minCourses",
             "minGroups",
@@ -2059,7 +2050,8 @@ window.onload = function() {
               "type": "string"
             },
             "password": {
-              "type": "string"
+              "type": "string",
+              "nullable": false
             }
           },
           "required": [
