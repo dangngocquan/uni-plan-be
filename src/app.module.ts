@@ -61,7 +61,7 @@ export class AppModule {
     consumer
       .apply(AuthMiddleware)
       .exclude(
-        { path: '', method: RequestMethod.GET },
+        { path: '/(.*)', method: RequestMethod.GET },
         { path: 'auth/(.*)', method: RequestMethod.POST },
       )
       .forRoutes('*');
