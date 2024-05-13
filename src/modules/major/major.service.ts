@@ -80,13 +80,17 @@ export class MajorService {
     const queryBuider = this.majorRepository
       .createQueryBuilder('major')
       .where(`major.id = '${majorId}'`)
-      .leftJoinAndSelect(`major.groupCourses`, 'groupCourses');
+      .leftJoinAndSelect(`major.groupCourses`, 'groupCourse')
+      .leftJoinAndSelect(`groupCourse.relationChildren`, 'relationChildren');
     const entity = await queryBuider.getOne();
     if (!entity) {
       throw new NotFoundException({
         message: 'Major not found',
       });
     }
+    entity.groupCourses = entity.groupCourses.filter(
+      (group) => group.relationChildren.length > 0,
+    );
     const dto = plainToClass(ResMajorDetailDto, entity);
     for (let i = 0; i < dto.groupCourses.length; i++) {
       const groupCourse = dto.groupCourses[i];
