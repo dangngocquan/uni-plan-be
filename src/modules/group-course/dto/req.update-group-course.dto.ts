@@ -1,13 +1,7 @@
 import { IsNumber } from 'class-validator';
-import { GroupCourseType } from '../group-course.enum';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class ReqUpdateGroupCourseDto {
-  @ApiProperty({
-    enum: GroupCourseType,
-  })
-  type: GroupCourseType;
-
   @ApiProperty({
     nullable: true,
     minimum: 0,
