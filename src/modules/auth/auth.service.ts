@@ -228,7 +228,7 @@ export class AuthService {
     }
 
     const accessToken = (await this.generateTokens(user)).accessToken;
-    const link = `${this.configService.get<string>('FE_URL')}?token=${accessToken}`;
+    const link = `${this.configService.get<string>('FE_URL')}/auth/reset-password?token=${accessToken}`;
     const mailResult: SentMessageInfo =
       await this.mailService.sendEmailResetPassword(dto.email, link);
 
