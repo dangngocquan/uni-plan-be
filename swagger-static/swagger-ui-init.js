@@ -2064,19 +2064,11 @@ window.onload = function() {
         "ReqResetPasswordDto": {
           "type": "object",
           "properties": {
-            "email": {
-              "type": "string"
-            },
-            "otp": {
-              "type": "string"
-            },
             "newPassword": {
               "type": "string"
             }
           },
           "required": [
-            "email",
-            "otp",
             "newPassword"
           ]
         }
