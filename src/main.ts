@@ -14,6 +14,8 @@ async function bootstrap() {
     exclude: [''],
   });
 
+  app.enableCors();
+
   const config = new DocumentBuilder()
     .setTitle('API Documentation')
     .setDescription('API description')
