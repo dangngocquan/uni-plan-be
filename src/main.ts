@@ -15,14 +15,30 @@ async function bootstrap() {
     exclude: [''],
   });
 
+  // CORS
+  const allowedOrigins = ['http://localhost:3000'];
   const corsOptions: CorsOptions = {
-    origin: ['http://localhost:3000'], // Allow only this origin
-    methods: 'GET, HEAD, PUT, PATCH, POST, DELETE, OPTIONS',
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
     allowedHeaders: 'Content-Type, Accept, Authorization',
-    credentials: true, // If you need to support cookies
+    credentials: true,
   };
   app.enableCors(corsOptions);
 
+  app.use(function (req, res, next) {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Headers', '*');
+    res.header('Access-Control-Allow-Methods', '*');
+    next();
+  });
+
+  // SWAGGER
   const config = new DocumentBuilder()
     .setTitle('API Documentation')
     .setDescription('API description')
