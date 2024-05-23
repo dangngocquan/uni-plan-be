@@ -18,17 +18,10 @@ async function bootstrap() {
   // CORS
   // const allowedOrigins = ['http://localhost:3000'];
   const corsOptions: CorsOptions = {
-    origin: '*',
+    origin: 'http://localhost:3000',
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
-    allowedHeaders: 'Content-Type, Accept, Authorization',
-    // credentials: true,
+    credentials: true,
   };
-  app.use((req, res, next) => {
-    res.header('Access-Control-Allow-Origin', '*');
-    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
-    res.header('Access-Control-Allow-Headers', 'Content-Type, Accept');
-    next();
-  });
   app.enableCors(corsOptions);
 
   // SWAGGER
