@@ -52,23 +52,32 @@ export class AuthController {
     return await this.authService.refreshToken(dto);
   }
 
-  @Post('login-google')
+  @Post('google')
   @ApiOkResponse({
-    description: 'User login by google.',
+    description: 'Auth google.',
     type: ResTokenDto,
   })
-  async loginByGoogle(@Body() dto: ReqGoogleTokenDto): Promise<ResTokenDto> {
-    return await this.authService.loginByGoogle(dto);
+  async authGoogle(@Body() dto: ReqGoogleTokenDto): Promise<ResTokenDto> {
+    return await this.authService.authGoogle(dto);
   }
 
-  @Post('signup-google')
-  @ApiOkResponse({
-    description: 'User signup by google.',
-    type: ResTokenDto,
-  })
-  async signupByGoogle(@Body() dto: ReqGoogleTokenDto): Promise<ResTokenDto> {
-    return await this.authService.signupByGoogle(dto);
-  }
+  // @Post('login-google')
+  // @ApiOkResponse({
+  //   description: 'User login by google.',
+  //   type: ResTokenDto,
+  // })
+  // async loginByGoogle(@Body() dto: ReqGoogleTokenDto): Promise<ResTokenDto> {
+  //   return await this.authService.loginByGoogle(dto);
+  // }
+
+  // @Post('signup-google')
+  // @ApiOkResponse({
+  //   description: 'User signup by google.',
+  //   type: ResTokenDto,
+  // })
+  // async signupByGoogle(@Body() dto: ReqGoogleTokenDto): Promise<ResTokenDto> {
+  //   return await this.authService.signupByGoogle(dto);
+  // }
 
   @Post('forgot-password')
   @ApiOkResponse({
@@ -85,6 +94,6 @@ export class AuthController {
     type: ResTokenDto,
   })
   async resetPassword(@Body() dto: ReqResetPasswordDto): Promise<ResTokenDto> {
-    return await this.authService.resetPassword(dto);
+    return await this.authService.resetPassword('as', dto);
   }
 }

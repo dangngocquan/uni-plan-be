@@ -15,7 +15,7 @@ import { Repository } from 'typeorm';
 import { ReqLoginDto } from './dto/req.login.dto';
 import * as bcrypt from 'bcrypt';
 import { ReqRefreshTokenDto } from './dto/req.refresh-token.dto';
-import { LoginTicket, OAuth2Client, TokenPayload } from 'google-auth-library';
+import { OAuth2Client, TokenPayload } from 'google-auth-library';
 import { ReqGoogleTokenDto } from './dto/req.gg-token.dto';
 import { ResMailDto } from '../mail/dto/mail-reponse.dto';
 import { MailService } from '../mail/mail.service';
@@ -53,7 +53,7 @@ export class AuthService {
       .slice(1);
     await this.cacheManager.set('signup-' + dto.email + '-' + otp, dto, 300000);
     const mailResult: SentMessageInfo =
-      await this.mailService.sendEmailVerifySignup(dto.email, otp);
+      await this.mailService.sendEmailVerifyEmail(dto.email, otp);
 
     return new ResMailDto(
       mailResult?.envelope?.from,
@@ -145,52 +145,75 @@ export class AuthService {
       this.configService.get<string>('GOOGLE_CLIENT_ID'),
       this.configService.get<string>('GOOGLE_CLIENT_SECRET'),
     );
-    let ticket: LoginTicket;
-
+    async function verify() {
+      const ticket = await client.getTokenInfo(token);
+      return ticket;
+    }
+    let result = null;
     try {
-      ticket = await client.verifyIdToken({
-        idToken: token,
-        audience: this.configService.get<string>('GOOGLE_CLIENT_ID'),
-      });
-    } catch {
+      result = await verify().catch(console.error);
+    } catch (err) {
       throw new UnauthorizedException({
         message: 'Invalid google token',
       });
     }
-
-    return ticket.getPayload();
+    return result;
   }
 
-  async signupByGoogle(dto: ReqGoogleTokenDto): Promise<ResTokenDto> {
+  async authGoogle(dto: ReqGoogleTokenDto): Promise<ResTokenDto> {
     const profile = await this.verifyGoogleToken(dto.idToken);
 
     const queryBuilder = this.usersRepository.createQueryBuilder('user');
     let user = await queryBuilder
       .where(`user.email = '${profile.email}'`)
       .getOne();
-    if (user) {
-      return this.generateTokens(user);
-    }
-    user = await this.userService.createUser(
-      new ReqSignUpDto(profile.email, null, profile.name),
-    );
-    return this.generateTokens(user);
-  }
-
-  async loginByGoogle(dto: ReqGoogleTokenDto): Promise<ResTokenDto> {
-    const profile = await this.verifyGoogleToken(dto.idToken);
-
-    const queryBuilder = this.usersRepository.createQueryBuilder('user');
-    const user = await queryBuilder
-      .where(`user.email = '${profile.email}'`)
-      .getOne();
     if (!user) {
-      throw new UnauthorizedException({
-        message: 'User not found',
-      });
+      const radomPassword = genarateRandomPassword();
+      user = await this.userService.createUser(
+        new ReqSignUpDto(
+          profile.email,
+          await bcrypt.hash(radomPassword, 10),
+          profile.name,
+        ),
+      );
+      await this.mailService.sendEmailDefaultPassword(
+        profile.email,
+        radomPassword,
+      );
     }
     return this.generateTokens(user);
   }
+
+  // async signupByGoogle(dto: ReqGoogleTokenDto): Promise<ResTokenDto> {
+  //   const profile = await this.verifyGoogleToken(dto.idToken);
+
+  //   const queryBuilder = this.usersRepository.createQueryBuilder('user');
+  //   let user = await queryBuilder
+  //     .where(`user.email = '${profile.email}'`)
+  //     .getOne();
+  //   if (user) {
+  //     return this.generateTokens(user);
+  //   }
+  //   user = await this.userService.createUser(
+  //     new ReqSignUpDto(profile.email, null, profile.name),
+  //   );
+  //   return this.generateTokens(user);
+  // }
+
+  // async loginByGoogle(dto: ReqGoogleTokenDto): Promise<ResTokenDto> {
+  //   const profile = await this.verifyGoogleToken(dto.idToken);
+
+  //   const queryBuilder = this.usersRepository.createQueryBuilder('user');
+  //   const user = await queryBuilder
+  //     .where(`user.email = '${profile.email}'`)
+  //     .getOne();
+  //   if (!user) {
+  //     throw new UnauthorizedException({
+  //       message: 'User not found',
+  //     });
+  //   }
+  //   return this.generateTokens(user);
+  // }
 
   async forgotPassword(dto: ReqForgotPasswordDto): Promise<ResMailDto> {
     const user = await this.usersRepository
@@ -204,18 +227,10 @@ export class AuthService {
       });
     }
 
-    const otp = (1000000 + Math.round(Math.random() * 999999))
-      .toString()
-      .slice(1);
-    await this.cacheManager.set(
-      'forget-' + dto.email + '-' + otp,
-      {
-        email: dto.email,
-      },
-      300000,
-    );
+    const accessToken = (await this.generateTokens(user)).accessToken;
+    const link = `${this.configService.get<string>('FE_URL')}?token=${accessToken}`;
     const mailResult: SentMessageInfo =
-      await this.mailService.sendEmailResetPassword(dto.email, otp);
+      await this.mailService.sendEmailResetPassword(dto.email, link);
 
     return new ResMailDto(
       mailResult?.envelope?.from,
@@ -223,22 +238,32 @@ export class AuthService {
     );
   }
 
-  async resetPassword(dto: ReqResetPasswordDto): Promise<ResTokenDto> {
-    // Check email-otp in Cache
-    const cacheUser = await this.cacheManager.get(
-      'forget-' + dto.email + '-' + dto.otp,
-    );
-    if (!cacheUser) {
-      throw new UnauthorizedException({
-        message: 'Invalid OTP code',
-      });
-    }
-    // Delete email-otp from Cache
-    await this.cacheManager.del('forget-' + dto.email + '-' + dto.otp);
-    // Update password
-    let user = await this.usersRepository.findOneBy({ email: dto.email });
+  async resetPassword(
+    token: string,
+    dto: ReqResetPasswordDto,
+  ): Promise<ResTokenDto> {
+    const payload = await this.verifyAccessToken(token);
+    let user = await this.usersRepository.findOneBy({ email: payload.email });
     user.password = await bcrypt.hash(dto.newPassword, 10);
     user = await this.usersRepository.save(user);
     return this.generateTokens(user);
   }
+
+  async verifyToken(token, secret: string) {
+    return this.jwtService.verifyAsync(token, {
+      secret,
+    });
+  }
+
+  async verifyAccessToken(token) {
+    return this.verifyToken(token, this.configService.get('JWT_SECRET'));
+  }
+
+  async verifyRefreshToken(token) {
+    return this.verifyToken(token, this.configService.get('JWT_SECRET'));
+  }
+}
+
+function genarateRandomPassword() {
+  return Math.random().toString(36).slice(-8);
 }
