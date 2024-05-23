@@ -1168,9 +1168,9 @@ window.onload = function() {
           ]
         }
       },
-      "/api/auth/login-google": {
+      "/api/auth/google": {
         "post": {
-          "operationId": "AuthController_loginByGoogle",
+          "operationId": "AuthController_authGoogle",
           "parameters": [],
           "requestBody": {
             "required": true,
@@ -1184,38 +1184,7 @@ window.onload = function() {
           },
           "responses": {
             "200": {
-              "description": "User login by google.",
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "$ref": "#/components/schemas/ResTokenDto"
-                  }
-                }
-              }
-            }
-          },
-          "tags": [
-            "auth"
-          ]
-        }
-      },
-      "/api/auth/signup-google": {
-        "post": {
-          "operationId": "AuthController_signupByGoogle",
-          "parameters": [],
-          "requestBody": {
-            "required": true,
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ReqGoogleTokenDto"
-                }
-              }
-            }
-          },
-          "responses": {
-            "200": {
-              "description": "User signup by google.",
+              "description": "Auth google.",
               "content": {
                 "application/json": {
                   "schema": {

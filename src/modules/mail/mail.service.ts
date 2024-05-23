@@ -8,7 +8,7 @@ export class MailService {
 
   async sendEmailResetPassword(
     email: string,
-    otp: string,
+    link: string,
   ): Promise<SentMessageInfo> {
     return await this.mailerService.sendMail({
       to: email,
@@ -16,14 +16,14 @@ export class MailService {
       template: './reset-password', // `.hbs` extension is appended automatically
       context: {
         name: email,
-        otp: otp,
+        link: link,
       },
     });
   }
 
-  async sendEmailVerifySignup(
+  async sendEmailVerifyEmail(
     email: string,
-    otp: string,
+    link: string,
   ): Promise<SentMessageInfo> {
     return await this.mailerService.sendMail({
       to: email,
@@ -31,7 +31,22 @@ export class MailService {
       template: './verify-email', // `.hbs` extension is appended automatically
       context: {
         name: email,
-        otp: otp,
+        link: link,
+      },
+    });
+  }
+
+  async sendEmailDefaultPassword(
+    email: string,
+    password: string,
+  ): Promise<SentMessageInfo> {
+    return await this.mailerService.sendMail({
+      to: email,
+      subject: '[Wallpaper] Default password',
+      template: './default-password', // `.hbs` extension is appended automatically
+      context: {
+        name: email,
+        password: password,
       },
     });
   }
