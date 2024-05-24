@@ -141,10 +141,7 @@ export class AuthService {
   }
 
   async verifyGoogleToken(token: string): Promise<TokenPayload> {
-    const client = new OAuth2Client(
-      this.configService.get<string>('GOOGLE_CLIENT_ID'),
-      this.configService.get<string>('GOOGLE_CLIENT_SECRET'),
-    );
+    const client = new OAuth2Client();
     async function verify() {
       const ticket = await client.getTokenInfo(token);
       return ticket;
@@ -228,7 +225,7 @@ export class AuthService {
     }
 
     const accessToken = (await this.generateTokens(user)).accessToken;
-    const link = `${this.configService.get<string>('FE_URL')}?token=${accessToken}`;
+    const link = `${this.configService.get<string>('FE_URL')}/auth/reset-password?token=${accessToken}`;
     const mailResult: SentMessageInfo =
       await this.mailService.sendEmailResetPassword(dto.email, link);
 
