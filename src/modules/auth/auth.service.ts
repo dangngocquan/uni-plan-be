@@ -141,10 +141,7 @@ export class AuthService {
   }
 
   async verifyGoogleToken(token: string): Promise<TokenPayload> {
-    const client = new OAuth2Client(
-      this.configService.get<string>('GOOGLE_CLIENT_ID'),
-      this.configService.get<string>('GOOGLE_CLIENT_SECRET'),
-    );
+    const client = new OAuth2Client();
     async function verify() {
       const ticket = await client.getTokenInfo(token);
       return ticket;
