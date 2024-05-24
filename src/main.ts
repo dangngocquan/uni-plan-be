@@ -5,6 +5,7 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ValidationPipe } from '@nestjs/common';
 import { get } from 'http';
 import { createWriteStream } from 'fs';
+import { CorsOptions } from '@nestjs/common/interfaces/external/cors-options.interface';
 
 dotenvConfig({ path: '.env' });
 
@@ -14,6 +15,16 @@ async function bootstrap() {
     exclude: [''],
   });
 
+  // CORS
+  // const allowedOrigins = ['http://localhost:3000'];
+  const corsOptions: CorsOptions = {
+    origin: `${process.env.ALLOW_ORIGIN}`,
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+    credentials: true,
+  };
+  app.enableCors(corsOptions);
+
+  // SWAGGER
   const config = new DocumentBuilder()
     .setTitle('API Documentation')
     .setDescription('API description')
