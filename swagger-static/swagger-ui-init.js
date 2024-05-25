@@ -1985,16 +1985,12 @@ window.onload = function() {
         "ReqVerifyEmailDto": {
           "type": "object",
           "properties": {
-            "email": {
-              "type": "string"
-            },
-            "otp": {
+            "token": {
               "type": "string"
             }
           },
           "required": [
-            "email",
-            "otp"
+            "token"
           ]
         },
         "ResTokenDto": {
