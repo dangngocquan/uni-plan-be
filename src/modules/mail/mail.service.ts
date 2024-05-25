@@ -12,7 +12,7 @@ export class MailService {
   ): Promise<SentMessageInfo> {
     return await this.mailerService.sendMail({
       to: email,
-      subject: '[Wallpaper] Reset password',
+      subject: '[UniPlan] Reset password',
       template: './reset-password', // `.hbs` extension is appended automatically
       context: {
         name: email,
@@ -27,7 +27,7 @@ export class MailService {
   ): Promise<SentMessageInfo> {
     return await this.mailerService.sendMail({
       to: email,
-      subject: '[Wallpaper] Email Verification',
+      subject: '[UniPlan] Email Verification',
       template: './verify-email', // `.hbs` extension is appended automatically
       context: {
         name: email,
@@ -42,7 +42,7 @@ export class MailService {
   ): Promise<SentMessageInfo> {
     return await this.mailerService.sendMail({
       to: email,
-      subject: '[Wallpaper] Default password',
+      subject: '[UniPlan] Default password',
       template: './default-password', // `.hbs` extension is appended automatically
       context: {
         name: email,
