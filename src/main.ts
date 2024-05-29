@@ -16,9 +16,15 @@ async function bootstrap() {
   });
 
   // CORS
-  // const allowedOrigins = ['http://localhost:3000'];
+  const allowedOrigins = `${process.env.ALLOW_ORIGIN}`.split('|');
   const corsOptions: CorsOptions = {
-    origin: `${process.env.ALLOW_ORIGIN}`,
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
     credentials: true,
   };
