@@ -27,6 +27,8 @@ async function bootstrap() {
     },
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
     credentials: true,
+    preflightContinue: false, // Ensure this is set to false to handle preflight automatically
+    optionsSuccessStatus: 204,
   };
   app.enableCors(corsOptions);
 
