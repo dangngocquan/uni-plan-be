@@ -48,12 +48,14 @@ export class AuthService {
         message: 'Email already exists',
       });
     }
-    const otp = (1000000 + Math.round(Math.random() * 999999))
-      .toString()
-      .slice(1);
-    await this.cacheManager.set('signup-' + dto.email + '-' + otp, dto, 300000);
+    const token = await this.generateTokenVerifyAccount({
+      name: dto.name,
+      email: dto.email,
+      password: dto.password,
+    });
+    const link = `${this.configService.get<string>('FE_URL')}/auth/verify-email?token=${token}`;
     const mailResult: SentMessageInfo =
-      await this.mailService.sendEmailVerifyEmail(dto.email, otp);
+      await this.mailService.sendEmailVerifyEmail(dto.email, link);
 
     return new ResMailDto(
       mailResult?.envelope?.from,
@@ -62,20 +64,20 @@ export class AuthService {
   }
 
   async verifySignup(dto: ReqVerifyEmailDto) {
-    // Check email-otp in Cache
-    const cacheUser: ReqSignUpDto = await this.cacheManager.get(
-      'signup-' + dto.email + '-' + dto.otp,
-    );
-    if (!cacheUser) {
+    let payload = null;
+    try {
+      payload = await this.verifyAccessToken(dto.token);
+    } catch (e) {
       throw new UnauthorizedException({
-        message: 'Invalid OTP',
+        message: 'Verify email failed.',
+        error: e.message,
       });
     }
-    // Delete email-otp from Cache
-    await this.cacheManager.del('forget-' + dto.email + '-' + dto.otp);
-    // Create account
-    cacheUser.password = await bcrypt.hash(cacheUser.password, 10);
-    const user = await this.userService.createUser(cacheUser);
+    const user = await this.userService.createUser({
+      name: payload.name,
+      email: payload.email,
+      password: await bcrypt.hash(payload.password, 10),
+    });
     return this.generateTokens(user);
   }
 
@@ -181,37 +183,6 @@ export class AuthService {
     return this.generateTokens(user);
   }
 
-  // async signupByGoogle(dto: ReqGoogleTokenDto): Promise<ResTokenDto> {
-  //   const profile = await this.verifyGoogleToken(dto.idToken);
-
-  //   const queryBuilder = this.usersRepository.createQueryBuilder('user');
-  //   let user = await queryBuilder
-  //     .where(`user.email = '${profile.email}'`)
-  //     .getOne();
-  //   if (user) {
-  //     return this.generateTokens(user);
-  //   }
-  //   user = await this.userService.createUser(
-  //     new ReqSignUpDto(profile.email, null, profile.name),
-  //   );
-  //   return this.generateTokens(user);
-  // }
-
-  // async loginByGoogle(dto: ReqGoogleTokenDto): Promise<ResTokenDto> {
-  //   const profile = await this.verifyGoogleToken(dto.idToken);
-
-  //   const queryBuilder = this.usersRepository.createQueryBuilder('user');
-  //   const user = await queryBuilder
-  //     .where(`user.email = '${profile.email}'`)
-  //     .getOne();
-  //   if (!user) {
-  //     throw new UnauthorizedException({
-  //       message: 'User not found',
-  //     });
-  //   }
-  //   return this.generateTokens(user);
-  // }
-
   async forgotPassword(dto: ReqForgotPasswordDto): Promise<ResMailDto> {
     const user = await this.usersRepository
       .createQueryBuilder('user')
@@ -257,6 +228,16 @@ export class AuthService {
   }
 
   async verifyRefreshToken(token) {
+    return this.verifyToken(token, this.configService.get('JWT_SECRET'));
+  }
+
+  async generateTokenVerifyAccount(payload) {
+    return this.jwtService.signAsync(payload, {
+      expiresIn: '1h',
+    });
+  }
+
+  async verifyTokenVerifyAccount(token) {
     return this.verifyToken(token, this.configService.get('JWT_SECRET'));
   }
 }
