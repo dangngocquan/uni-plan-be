@@ -10,7 +10,12 @@ import {
   Query,
 } from '@nestjs/common';
 import { CourseService } from './course.service';
-import { ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiCreatedResponse,
+  ApiOkResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { PageOptionCourseDto } from './dto/req.page-option.course.dto';
 import { PaginationCourseDto } from './dto/res.page.course.dto';
 import { ResCourseDto } from './dto/res.course.dto';
@@ -35,6 +40,7 @@ export class CourseController {
   }
 
   @Post()
+  @ApiBearerAuth()
   @ApiCreatedResponse({
     description: 'Create a new course',
     type: ResCourseDto,
@@ -44,6 +50,7 @@ export class CourseController {
   }
 
   @Put(':courseId')
+  @ApiBearerAuth()
   @ApiOkResponse({
     description: 'Update a course',
     type: ResCourseDto,
@@ -56,6 +63,7 @@ export class CourseController {
   }
 
   @Delete(':courseId')
+  @ApiBearerAuth()
   @ApiOkResponse({
     description: 'Delete a course',
     type: ResDeleteResultDto,
@@ -65,6 +73,7 @@ export class CourseController {
   }
 
   @Post(':courseId/relation')
+  @ApiBearerAuth()
   @ApiOkResponse({
     description: 'Add a prereq course',
     type: ResCourseDto,

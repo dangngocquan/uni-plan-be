@@ -10,7 +10,12 @@ import {
   Query,
 } from '@nestjs/common';
 import { GroupCourseService } from './group-course.service';
-import { ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiCreatedResponse,
+  ApiOkResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { PageOptionGroupCourseDto } from './dto/req.page-option.group-course.dto';
 import { PaginationGroupCourseDto } from './dto/res.page.group-course.dto';
 import { ResGroupCourseDto } from './dto/res.group-course.dto';
@@ -39,6 +44,7 @@ export class GroupCourseController {
   }
 
   @Post()
+  @ApiBearerAuth()
   @ApiCreatedResponse({
     description: 'Create a new group course',
     type: ResGroupCourseDto,
@@ -50,6 +56,7 @@ export class GroupCourseController {
   }
 
   @Put(':groupId')
+  @ApiBearerAuth()
   @ApiOkResponse({
     description: 'Update a group course',
     type: ResGroupCourseDto,
@@ -62,6 +69,7 @@ export class GroupCourseController {
   }
 
   @Delete(':groupId')
+  @ApiBearerAuth()
   @ApiOkResponse({
     description: 'Delete a group course',
     type: ResDeleteResultDto,
@@ -71,6 +79,7 @@ export class GroupCourseController {
   }
 
   @Post('relation')
+  @ApiBearerAuth()
   @ApiCreatedResponse({
     description: 'Create a new group relation',
     type: ResGroupRelationDto,

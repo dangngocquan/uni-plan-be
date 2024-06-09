@@ -10,7 +10,12 @@ import {
   Query,
 } from '@nestjs/common';
 import { MajorService } from './major.service';
-import { ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiCreatedResponse,
+  ApiOkResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { PaginationMajorDto } from './dto/res.page.major.dto';
 import { ResMajorDto } from './dto/res.major.dto';
 import { UUID } from 'crypto';
@@ -35,6 +40,7 @@ export class MajorController {
   }
 
   @Post()
+  @ApiBearerAuth()
   @ApiCreatedResponse({
     description: 'Create a new major',
     type: ResMajorDto,
@@ -44,6 +50,7 @@ export class MajorController {
   }
 
   @Put(':majorId')
+  @ApiBearerAuth()
   @ApiOkResponse({
     description: 'Update a major',
     type: ResMajorDto,
@@ -56,6 +63,7 @@ export class MajorController {
   }
 
   @Delete(':majorId')
+  @ApiBearerAuth()
   @ApiOkResponse({
     description: 'Delete a major',
     type: ResDeleteResultDto,

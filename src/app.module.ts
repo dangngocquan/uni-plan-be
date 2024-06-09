@@ -65,5 +65,9 @@ export class AppModule {
         { path: 'auth/(.*)', method: RequestMethod.POST },
       )
       .forRoutes('*');
+
+    consumer
+      .apply(AuthMiddleware)
+      .forRoutes({ path: 'auth/me', method: RequestMethod.GET });
   }
 }
