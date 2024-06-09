@@ -47,6 +47,14 @@ export class UserEntity {
   })
   role: Role;
 
+  @Column({
+    name: 'avatar',
+    type: 'text',
+    nullable: true,
+    default: null,
+  })
+  avatar: string | null;
+
   @CreateDateColumn({
     type: 'timestamp',
     name: 'created_at',

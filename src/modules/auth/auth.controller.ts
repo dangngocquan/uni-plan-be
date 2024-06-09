@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post, Req } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { ReqSignUpDto } from './dto/req.signup.dto';
 import { ResTokenDto } from './dto/res.token.dto';
@@ -9,7 +9,8 @@ import { ReqForgotPasswordDto } from './dto/req.forgot-password.dto';
 import { ResMailDto } from '../mail/dto/mail-reponse.dto';
 import { ReqResetPasswordDto } from './dto/req.reset-password.dto';
 import { ReqVerifyEmailDto } from './dto/req.verify-email.dto';
-import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { ResGetMeDto } from './dto/res.get-me.dto';
 
 @Controller('auth')
 @ApiTags('auth')
@@ -61,24 +62,6 @@ export class AuthController {
     return await this.authService.authGoogle(dto);
   }
 
-  // @Post('login-google')
-  // @ApiOkResponse({
-  //   description: 'User login by google.',
-  //   type: ResTokenDto,
-  // })
-  // async loginByGoogle(@Body() dto: ReqGoogleTokenDto): Promise<ResTokenDto> {
-  //   return await this.authService.loginByGoogle(dto);
-  // }
-
-  // @Post('signup-google')
-  // @ApiOkResponse({
-  //   description: 'User signup by google.',
-  //   type: ResTokenDto,
-  // })
-  // async signupByGoogle(@Body() dto: ReqGoogleTokenDto): Promise<ResTokenDto> {
-  //   return await this.authService.signupByGoogle(dto);
-  // }
-
   @Post('forgot-password')
   @ApiOkResponse({
     description: 'Forget password.',
@@ -95,5 +78,15 @@ export class AuthController {
   })
   async resetPassword(@Body() dto: ReqResetPasswordDto): Promise<ResTokenDto> {
     return await this.authService.resetPassword('as', dto);
+  }
+
+  @ApiBearerAuth()
+  @Get('me')
+  @ApiOkResponse({
+    description: 'Get me.',
+    type: ResGetMeDto,
+  })
+  async getMe(@Req() req: any) {
+    return req.user;
   }
 }
