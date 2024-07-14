@@ -11,6 +11,7 @@ import { paginate } from 'nestjs-typeorm-paginate';
 import { reqUpdateSchoolDto } from './dto/req.update-school.dto';
 import { UUID } from 'crypto';
 import { ResDeleteResultDto } from '../../shared/dto/response/res.delete-result.dto';
+import { OrderType } from '../../shared/dto/pagination/order.enum';
 
 @Injectable()
 export class SchoolService {
@@ -20,7 +21,14 @@ export class SchoolService {
   ) {}
 
   async getSchools(dto: PaginationOptionsDto): Promise<PaginationSchoolDto> {
-    const queryBuider = this.schoolRepository.createQueryBuilder('school');
+    const queryBuider = this.schoolRepository
+      .createQueryBuilder('school')
+      .where({
+        name: `school.name LIKE '%${dto.q}%'`,
+      })
+      .orderBy({
+        name: dto.order === OrderType.ASC ? 'ASC' : 'DESC',
+      });
     const { items, meta, links } = await paginate(queryBuider, {
       page: dto.page,
       limit: dto.limit,
