@@ -14,6 +14,7 @@ import { SchoolEntity } from '../school/school.entity';
 import { PageOptionMajorDto } from './dto/req.page-option.major.dto';
 import { ResMajorDetailDto } from './dto/res.major-detail.dto';
 import { GroupCourseService } from '../group-course/group-course.service';
+import { OrderType } from '../../shared/dto/pagination/order.enum';
 
 @Injectable()
 export class MajorService {
@@ -26,8 +27,13 @@ export class MajorService {
   ) {}
 
   async get(dto: PageOptionMajorDto): Promise<PaginationMajorDto> {
-    const queryBuider = this.majorRepository.createQueryBuilder('major');
-    if (dto.schoolId) {
+    const queryBuider = this.majorRepository
+      .createQueryBuilder('major')
+      .where(`major.name LIKE '%${dto.q}%'`)
+      .orderBy({
+        name: dto.order === OrderType.ASC ? 'ASC' : 'DESC',
+      });
+    if (dto.schoolId !== undefined) {
       queryBuider.where(`major.schoolId = '${dto.schoolId}'`);
     }
     const { items, meta, links } = await paginate(queryBuider, {
