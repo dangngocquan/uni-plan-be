@@ -37,5 +37,5 @@ export class PaginationOptionsDto {
   @ApiPropertyOptional({
     nullable: true,
   })
-  readonly q?: string;
+  readonly q?: string = '';
 }
