@@ -127,6 +127,7 @@ export class AuthService {
       id: user.id,
       name: user.name,
       email: user.email,
+      avatar: user.avatar,
       role: user.role,
     };
     const accessToken = await this.jwtService.signAsync(payload, {
@@ -160,7 +161,7 @@ export class AuthService {
   }
 
   async authGoogle(dto: ReqGoogleTokenDto): Promise<ResTokenDto> {
-    const profile = await this.verifyGoogleToken(dto.idToken);
+    const profile = await this.verifyGoogleToken(dto.googleAccessToken);
 
     const queryBuilder = this.usersRepository.createQueryBuilder('user');
     let user = await queryBuilder
@@ -168,17 +169,21 @@ export class AuthService {
       .getOne();
     if (!user) {
       const radomPassword = genarateRandomPassword();
-      user = await this.userService.createUser(
-        new ReqSignUpDto(
-          profile.email,
-          await bcrypt.hash(radomPassword, 10),
-          profile.name,
-        ),
-      );
+      user = await this.usersRepository.create({
+        email: profile.email,
+        password: await bcrypt.hash(radomPassword, 10),
+        name: profile.name,
+        avatar: profile.picture,
+      });
+      await this.usersRepository.save(user);
       await this.mailService.sendEmailDefaultPassword(
         profile.email,
         radomPassword,
       );
+    } else {
+      user.avatar = profile.picture;
+      user.name = profile.name;
+      await this.usersRepository.save(user);
     }
     return this.generateTokens(user);
   }
@@ -239,6 +244,10 @@ export class AuthService {
 
   async verifyTokenVerifyAccount(token) {
     return this.verifyToken(token, this.configService.get('JWT_SECRET'));
+  }
+
+  async getMe(accessToken: string) {
+    return this.verifyAccessToken(accessToken);
   }
 }
 

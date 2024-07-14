@@ -10,7 +10,12 @@ import {
   Query,
 } from '@nestjs/common';
 import { SchoolService } from './school.service';
-import { ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiCreatedResponse,
+  ApiOkResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { ResSchoolDto } from './dto/res.school.dto';
 import { ReqCreateSchoolDto } from './dto/req.create-school.dto';
 import { PaginationOptionsDto } from '../../shared/dto/pagination/pagination.option.dto';
@@ -36,6 +41,7 @@ export class SchoolController {
   }
 
   @Post()
+  @ApiBearerAuth()
   @ApiCreatedResponse({
     description: 'Create a new school',
     type: ResSchoolDto,
@@ -45,6 +51,7 @@ export class SchoolController {
   }
 
   @Put(':schoolId')
+  @ApiBearerAuth()
   @ApiOkResponse({
     description: 'Update a school',
     type: ResSchoolDto,
@@ -57,6 +64,7 @@ export class SchoolController {
   }
 
   @Delete(':schoolId')
+  @ApiBearerAuth()
   @ApiOkResponse({
     description: 'Delete a school',
     type: ResDeleteResultDto,

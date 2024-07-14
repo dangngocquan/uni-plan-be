@@ -11,7 +11,12 @@ import {
 } from '@nestjs/common';
 import { GradeConversionService } from './grade-conversion.service';
 import { ReqCreateGradeConversionTableDto } from './dto/req.create-table.dto';
-import { ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiCreatedResponse,
+  ApiOkResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { ResGradeConversionTableDto } from './dto/res.conversion-table.dto';
 import { UUID } from 'crypto';
 import { PaginationConversionTableDto } from './dto/res.page.conversion.table.dto';
@@ -37,6 +42,7 @@ export class GradeConversionController {
   }
 
   @Post('table')
+  @ApiBearerAuth()
   @ApiCreatedResponse({
     description: 'Create a grade conversion table',
     type: ResGradeConversionTableDto,
@@ -48,6 +54,7 @@ export class GradeConversionController {
   }
 
   @Put('table/:tableId')
+  @ApiBearerAuth()
   @ApiOkResponse({
     description: 'Update a grade conversion table',
     type: ResGradeConversionTableDto,
@@ -63,6 +70,7 @@ export class GradeConversionController {
   }
 
   @Delete('table/:tableId')
+  @ApiBearerAuth()
   @ApiOkResponse({
     description: 'Delete a grade conversion table',
     type: ResDeleteResultDto,
