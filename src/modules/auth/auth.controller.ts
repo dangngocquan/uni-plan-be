@@ -77,7 +77,7 @@ export class AuthController {
     type: ResTokenDto,
   })
   async resetPassword(@Body() dto: ReqResetPasswordDto): Promise<ResTokenDto> {
-    return await this.authService.resetPassword('as', dto);
+    return await this.authService.resetPassword(dto);
   }
 
   @ApiBearerAuth()

@@ -211,11 +211,8 @@ export class AuthService {
     );
   }
 
-  async resetPassword(
-    token: string,
-    dto: ReqResetPasswordDto,
-  ): Promise<ResTokenDto> {
-    const payload = await this.verifyAccessToken(token);
+  async resetPassword(dto: ReqResetPasswordDto): Promise<ResTokenDto> {
+    const payload = await this.verifyAccessToken(dto.token);
     let user = await this.usersRepository.findOneBy({ email: payload.email });
     user.password = await bcrypt.hash(dto.newPassword, 10);
     user = await this.usersRepository.save(user);
