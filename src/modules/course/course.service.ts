@@ -29,25 +29,32 @@ export class CourseService {
   async get(dto: PageOptionCourseDto): Promise<PaginationCourseDto> {
     const queryBuider = this.courseRepository
       .createQueryBuilder('course')
-      .where(`course.id NOT NULL`);
-    if (dto.id.length > 0) {
+      .where(`course.id IS NOT NULL`);
+    if (dto.id?.length > 0) {
       const ids = dto.id.map((id) => `course.id = '${id}'`);
       queryBuider.andWhere(ids.join(' OR '));
     }
-    if (dto.code.length > 0) {
+    if (dto.code?.length > 0) {
       const codes = dto.code.map(
         (code) => `LOWER(course.code) LIKE '%${code.toLowerCase().trim()}%'`,
       );
       queryBuider.andWhere(codes.join(' OR '));
     }
-    if (dto.name.length > 0) {
-      queryBuider.where(`LOWER(course.name) LIKE '%${dto.name}%'`);
+    if (dto.name?.length > 0) {
+      const names = dto.name.map(
+        (name) => `LOWER(course.code) LIKE '%${name.toLowerCase().trim()}%'`,
+      );
+      queryBuider.andWhere(names.join(' OR '));
     }
-    if (dto.credits.length > 0) {
-      queryBuider.where(`course.credits = '${dto.credits}'`);
+    if (dto.credits?.length > 0) {
+      const credits = dto.credits.map((credit) => `course.credits = ${credit}`);
+      queryBuider.andWhere(credits.join(' OR '));
     }
-    if (dto.groupId.length > 0) {
-      queryBuider.where(`course.groupId = '${dto.groupId}'`);
+    if (dto.groupId?.length > 0) {
+      const groupIds = dto.groupId.map(
+        (groupId) => `course.groupId = '${groupId}'`,
+      );
+      queryBuider.andWhere(groupIds.join(' OR '));
     }
     const { items, meta, links } = await paginate(queryBuider, {
       page: dto.page,
