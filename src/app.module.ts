@@ -19,6 +19,7 @@ import { join } from 'path';
 import { AuthMiddleware } from './modules/auth/middleware/auth.middleware';
 import { JwtModule } from '@nestjs/jwt';
 import { AuthModule } from './modules/auth/auth.module';
+import { AdminModule } from './modules/admin/admin.module';
 
 @Module({
   imports: [
@@ -52,6 +53,7 @@ import { AuthModule } from './modules/auth/auth.module';
     GradeConversionModule,
     JwtModule,
     AuthModule,
+    AdminModule,
   ],
   controllers: [AppController],
   providers: [AppService],
@@ -63,6 +65,7 @@ export class AppModule {
       .exclude(
         { path: '/(.*)', method: RequestMethod.GET },
         { path: 'auth/(.*)', method: RequestMethod.POST },
+        { path: 'admin/auth/login', method: RequestMethod.POST },
       )
       .forRoutes('*');
 

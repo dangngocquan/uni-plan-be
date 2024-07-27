@@ -23,7 +23,7 @@ export class SchoolService {
   async getSchools(dto: PaginationOptionsDto): Promise<PaginationSchoolDto> {
     const queryBuider = this.schoolRepository
       .createQueryBuilder('school')
-      .where(`school.name LIKE '%${dto.q}%'`)
+      .where(`LOWER(school.name) LIKE '%${dto.q.toLowerCase().trim()}%'`)
       .orderBy({
         name: dto.order === OrderType.ASC ? 'ASC' : 'DESC',
       });
