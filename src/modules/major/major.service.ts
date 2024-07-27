@@ -29,7 +29,7 @@ export class MajorService {
   async get(dto: PageOptionMajorDto): Promise<PaginationMajorDto> {
     const queryBuider = this.majorRepository
       .createQueryBuilder('major')
-      .where(`major.name LIKE '%${dto.q}%'`)
+      .where(`LOWER(major.name) LIKE '%${dto.q.toLowerCase().trim()}%'`)
       .orderBy({
         name: dto.order === OrderType.ASC ? 'ASC' : 'DESC',
       });
