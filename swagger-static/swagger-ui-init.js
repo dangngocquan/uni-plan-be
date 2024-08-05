@@ -1,4 +1,5 @@
-window.onload = function () {
+
+window.onload = function() {
   // Build a system
   let url = window.location.search.match(/url=([^&]+)/);
   if (url && url.length > 1) {
@@ -1931,22 +1932,27 @@ window.onload = function () {
     urls: urls,
     dom_id: '#swagger-ui',
     deepLinking: true,
-    presets: [SwaggerUIBundle.presets.apis, SwaggerUIStandalonePreset],
-    plugins: [SwaggerUIBundle.plugins.DownloadUrl],
-    layout: 'StandaloneLayout',
-  };
+    presets: [
+      SwaggerUIBundle.presets.apis,
+      SwaggerUIStandalonePreset
+    ],
+    plugins: [
+      SwaggerUIBundle.plugins.DownloadUrl
+    ],
+    layout: "StandaloneLayout"
+  }
   for (let attrname in customOptions) {
     swaggerOptions[attrname] = customOptions[attrname];
   }
-  let ui = SwaggerUIBundle(swaggerOptions);
+  let ui = SwaggerUIBundle(swaggerOptions)
 
   if (customOptions.initOAuth) {
-    ui.initOAuth(customOptions.initOAuth);
+    ui.initOAuth(customOptions.initOAuth)
   }
 
   if (customOptions.authAction) {
-    ui.authActions.authorize(customOptions.authAction);
+    ui.authActions.authorize(customOptions.authAction)
   }
-
-  window.ui = ui;
-};
+  
+  window.ui = ui
+}
