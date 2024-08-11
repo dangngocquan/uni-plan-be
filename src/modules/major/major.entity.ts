@@ -28,6 +28,13 @@ export class MajorEntity {
   })
   schoolId: UUID;
 
+  @Column({
+    name: 'order_index',
+    type: 'float',
+    default: () => 'extract(epoch from now())',
+  })
+  orderIndex: number;
+
   @ManyToOne(() => SchoolEntity, (school) => school.majors, {
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE',

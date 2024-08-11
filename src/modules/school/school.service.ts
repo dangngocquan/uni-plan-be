@@ -25,7 +25,8 @@ export class SchoolService {
       .createQueryBuilder('school')
       .where(`LOWER(school.name) LIKE '%${dto.q.toLowerCase().trim()}%'`)
       .orderBy({
-        name: dto.order === OrderType.ASC ? 'ASC' : 'DESC',
+        'school.orderIndex': 'ASC',
+        'school.name': dto.order === OrderType.ASC ? 'ASC' : 'DESC',
       });
     const { items, meta, links } = await paginate(queryBuider, {
       page: dto.page,
