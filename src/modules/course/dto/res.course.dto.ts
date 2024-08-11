@@ -23,4 +23,7 @@ export class ResCourseDto {
     type: () => ResCourseRelationDto,
   })
   prereqCourseRelations: ResCourseRelationDto[];
+
+  @ApiProperty()
+  orderIndex: number;
 }

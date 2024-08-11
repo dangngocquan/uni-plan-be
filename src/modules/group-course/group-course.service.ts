@@ -128,6 +128,9 @@ export class GroupCourseService {
       });
     }
     const dto = plainToClass(ResGroupCourseDetailDto, entity);
+    dto.courses = dto.courses.sort((a, b) => {
+      return a.orderIndex - b.orderIndex;
+    });
     dto.children = [];
     for (const relationChild of entity.relationChildren) {
       dto.children.push(await this.getGroupDetails(relationChild.groupId));
