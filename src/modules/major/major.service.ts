@@ -31,7 +31,8 @@ export class MajorService {
       .createQueryBuilder('major')
       .where(`LOWER(major.name) LIKE '%${dto.q.toLowerCase().trim()}%'`)
       .orderBy({
-        name: dto.order === OrderType.ASC ? 'ASC' : 'DESC',
+        'major.orderIndex': 'ASC',
+        'major.name': dto.order === OrderType.ASC ? 'ASC' : 'DESC',
       });
     if (dto.schoolId !== undefined) {
       queryBuider.where(`major.schoolId = '${dto.schoolId}'`);
@@ -94,9 +95,11 @@ export class MajorService {
         message: 'Major not found',
       });
     }
-    entity.groupCourses = entity.groupCourses.filter(
-      (group) => group.relationChildren.length > 0,
-    );
+    entity.groupCourses = entity.groupCourses
+      .filter((group) => group.level == 1)
+      .sort((a, b) => {
+        return a.orderIndex - b.orderIndex;
+      });
     const dto = plainToClass(ResMajorDetailDto, entity);
     for (let i = 0; i < dto.groupCourses.length; i++) {
       const groupCourse = dto.groupCourses[i];

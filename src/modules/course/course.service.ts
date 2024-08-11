@@ -14,6 +14,8 @@ import { ReqUpdateCourseDto } from './dto/req.update-course.dto';
 import { UUID } from 'crypto';
 import { ResDeleteResultDto } from '../../shared/dto/response/res.delete-result.dto';
 import { ReqCreateCourseRelationDto } from './dto/req.create-course-relation.dto';
+import { ReqUpdateCourseRelationDto } from './dto/req.update-course-relation.dto';
+import { ResCourseRelationDto } from './dto/res.course-relation.dto';
 
 @Injectable()
 export class CourseService {
@@ -29,7 +31,11 @@ export class CourseService {
   async get(dto: PageOptionCourseDto): Promise<PaginationCourseDto> {
     const queryBuider = this.courseRepository
       .createQueryBuilder('course')
-      .where(`course.id IS NOT NULL`);
+      .where(`course.id IS NOT NULL`)
+      .leftJoinAndSelect(
+        'course.prereqCourseRelations',
+        'prereqCourseRelations',
+      );
     if (dto.id?.length > 0) {
       const ids = dto.id.map((id) => `course.id = '${id}'`);
       queryBuider.andWhere(ids.join(' OR '));
@@ -56,6 +62,9 @@ export class CourseService {
       );
       queryBuider.andWhere(groupIds.join(' OR '));
     }
+    queryBuider.orderBy({
+      'course.orderIndex': 'ASC',
+    });
     const { items, meta, links } = await paginate(queryBuider, {
       page: dto.page,
       limit: dto.limit,
@@ -110,6 +119,7 @@ export class CourseService {
     courseId: UUID,
     dto: ReqCreateCourseRelationDto,
   ): Promise<ResCourseDto> {
+    console.log({ dto });
     const queryBuider = this.courseRepository
       .createQueryBuilder('course')
       .where(`course.id = '${courseId}'`);
@@ -125,8 +135,37 @@ export class CourseService {
     });
     await this.courseRelationRepository.save(relationEntity);
     courseEntity = await queryBuider
-      .leftJoinAndSelect('course.prereqCourseCodes', 'prereqCourseCodes')
+      .leftJoinAndSelect(
+        'course.prereqCourseRelations',
+        'prereqCourseRelations',
+      )
       .getOne();
     return plainToClass(ResCourseDto, courseEntity);
+  }
+
+  async updatePrereqCode(
+    courseRelationId: UUID,
+    dto: ReqUpdateCourseRelationDto,
+  ) {
+    let courseRelationEntity = await this.courseRelationRepository
+      .createQueryBuilder('courseRelation')
+      .where(`courseRelation.id = '${courseRelationId}'`)
+      .getOne();
+    if (!courseRelationEntity) {
+      throw new NotFoundException({
+        message: 'Course relation not found',
+      });
+    }
+    courseRelationEntity.prereqCourseCode = dto.prereqCourseCode;
+    courseRelationEntity =
+      await this.courseRelationRepository.save(courseRelationEntity);
+    return plainToClass(ResCourseRelationDto, courseRelationEntity);
+  }
+
+  async deletePrereqCourseCode(
+    courseRelationId: UUID,
+  ): Promise<ResDeleteResultDto> {
+    const result = await this.courseRelationRepository.delete(courseRelationId);
+    return plainToClass(ResDeleteResultDto, result);
   }
 }

@@ -40,6 +40,9 @@ export class GroupCourseService {
     if (dto.type) {
       queryBuider.where(`groupCourse.type = '${dto.type}'`);
     }
+    queryBuider.orderBy({
+      'groupCourse.orderIndex': 'ASC',
+    });
     const { items, meta, links } = await paginate(queryBuider, {
       page: dto.page,
       limit: dto.limit,
@@ -57,6 +60,7 @@ export class GroupCourseService {
       majorId: dto.majorId,
       title: dto.title,
       description: dto.description,
+      level: dto.level,
     });
     groupCourseEntity =
       await this.groupCourseRepository.save(groupCourseEntity);
@@ -112,7 +116,11 @@ export class GroupCourseService {
       .createQueryBuilder('groupCourse')
       .where(`groupCourse.id = '${groupId}'`)
       .leftJoinAndSelect(`groupCourse.relationChildren`, 'relationChildren')
-      .leftJoinAndSelect(`groupCourse.courses`, 'courses');
+      .leftJoinAndSelect(`groupCourse.courses`, 'courses')
+      .leftJoinAndSelect(
+        'courses.prereqCourseRelations',
+        'prereqCourseRelations',
+      );
     const entity = await queryBuider.getOne();
     if (!entity) {
       throw new NotFoundException({
@@ -124,6 +132,7 @@ export class GroupCourseService {
     for (const relationChild of entity.relationChildren) {
       dto.children.push(await this.getGroupDetails(relationChild.groupId));
     }
+
     return dto;
   }
 

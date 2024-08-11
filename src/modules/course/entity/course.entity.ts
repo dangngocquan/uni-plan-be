@@ -41,6 +41,13 @@ export class CourseEntity {
   })
   groupId: UUID;
 
+  @Column({
+    name: 'order_index',
+    type: 'float',
+    default: () => 'extract(epoch from now())',
+  })
+  orderIndex: number;
+
   @ManyToOne(() => GroupCourseEntity, (group) => group.courses)
   @JoinColumn({ name: 'group_id' })
   group: GroupCourseEntity;

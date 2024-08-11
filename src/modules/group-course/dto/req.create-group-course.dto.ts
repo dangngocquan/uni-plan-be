@@ -46,4 +46,10 @@ export class ReqCreateGroupCourseDto {
     example: 'null | string',
   })
   parentGroupId: null | UUID;
+
+  @ApiProperty({
+    nullable: true,
+  })
+  @IsNumber()
+  level: number | 1;
 }
