@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { UUID } from 'crypto';
+import { ResCourseRelationDto } from './res.course-relation.dto';
 
 export class ResCourseDto {
   @ApiProperty()
@@ -19,6 +20,7 @@ export class ResCourseDto {
 
   @ApiProperty({
     isArray: true,
+    type: () => ResCourseRelationDto,
   })
-  prereqCourseCodes: string[];
+  prereqCourseRelations: ResCourseRelationDto[];
 }

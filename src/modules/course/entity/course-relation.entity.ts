@@ -1,14 +1,16 @@
 import { UUID } from 'crypto';
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { CourseEntity } from './course.entity';
 
 @Entity({ name: 'course_relation' })
 export class CourseRelationEntity {
-  @PrimaryColumn({
-    name: 'id',
-    type: 'uuid',
-    nullable: false,
-  })
+  @PrimaryGeneratedColumn('uuid')
   id: UUID;
 
   @Column({

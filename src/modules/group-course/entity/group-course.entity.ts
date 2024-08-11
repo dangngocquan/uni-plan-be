@@ -48,11 +48,19 @@ export class GroupCourseEntity {
   minGroups?: number | null;
 
   @Column({
+    name: 'level',
+    type: 'bigint',
+    nullable: false,
+    default: 1,
+  })
+  level: number;
+
+  @Column({
     name: 'major_id',
     type: 'uuid',
     nullable: false,
   })
-  majorId?: UUID;
+  majorId: UUID;
 
   @Column({
     name: 'title',
@@ -69,6 +77,13 @@ export class GroupCourseEntity {
     nullable: true,
   })
   description?: string;
+
+  @Column({
+    name: 'order_index',
+    type: 'float',
+    default: () => 'extract(epoch from now())',
+  })
+  orderIndex: number;
 
   @OneToMany(() => GroupCourseRelationEntity, (relation) => relation.childGroup)
   relationParents: GroupCourseRelationEntity[];

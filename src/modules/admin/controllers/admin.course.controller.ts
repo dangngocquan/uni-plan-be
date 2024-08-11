@@ -27,6 +27,8 @@ import { ReqCreateCourseRelationDto } from '../../course/dto/req.create-course-r
 import { CourseService } from '../../course/course.service';
 import { ReqCreateCourseDto } from '../../course/dto/req.create-course.dto';
 import { ReqUpdateCourseDto } from '../../course/dto/req.update-course.dto';
+import { ReqUpdateCourseRelationDto } from '../../course/dto/req.update-course-relation.dto';
+import { ResCourseRelationDto } from '../../course/dto/res.course-relation.dto';
 
 @Controller('admin')
 @ApiTags('Admin Course')
@@ -127,5 +129,30 @@ export class AdminCourseController {
     @Body() dto: ReqCreateCourseRelationDto,
   ): Promise<ResCourseDto> {
     return this.courseService.addPrereqCourseCode(courseId, dto);
+  }
+
+  @Put('courseRelation/:courseRelationId')
+  @ApiBearerAuth()
+  @ApiOkResponse({
+    description: 'Update a course realtion',
+    type: ResCourseDto,
+  })
+  async updateCourseRelation(
+    @Param('courseRelationId', ParseUUIDPipe) courseRelationId: UUID,
+    @Body() dto: ReqUpdateCourseRelationDto,
+  ): Promise<ResCourseRelationDto> {
+    return this.courseService.updatePrereqCode(courseRelationId, dto);
+  }
+
+  @Delete('courseRelation/:courseRelationId')
+  @ApiBearerAuth()
+  @ApiOkResponse({
+    description: 'Delete a course prereq code',
+    type: ResDeleteResultDto,
+  })
+  async deletePrereqCourseCode(
+    @Param('courseRelationId', ParseUUIDPipe) id: UUID,
+  ) {
+    return this.courseService.deletePrereqCourseCode(id);
   }
 }
