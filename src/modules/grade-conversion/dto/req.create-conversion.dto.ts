@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNumber, IsString } from 'class-validator';
+import { IsEnum, IsNumber, IsString } from 'class-validator';
+import { FourPointGrade, LetterGrade } from '../grade-conversion.enum';
 
 export class ReqCreateGradeConversionDto {
   @ApiProperty()
@@ -14,11 +15,17 @@ export class ReqCreateGradeConversionDto {
   @IsString()
   labelTenPointGrade: string;
 
-  @ApiProperty()
+  @ApiProperty({
+    enum: FourPointGrade,
+  })
   @IsNumber()
-  fourPointGrade: number;
+  @IsEnum(FourPointGrade)
+  fourPointGrade: FourPointGrade;
 
-  @ApiProperty()
+  @ApiProperty({
+    enum: LetterGrade,
+  })
   @IsString()
-  letterGrade: string;
+  @IsEnum(LetterGrade)
+  letterGrade: LetterGrade;
 }

@@ -4,7 +4,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from '../users/user.entity';
 import { ReqLoginDto } from '../auth/dto/req.login.dto';
 import { ResTokenDto } from '../auth/dto/res.token.dto';
-import * as bcrypt from 'bcrypt';
+import * as bcrypt from 'bcryptjs';
 import { AuthService } from '../auth/auth.service';
 import { Role } from '../users/role.enum';
 

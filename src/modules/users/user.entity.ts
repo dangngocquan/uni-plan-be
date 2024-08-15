@@ -3,10 +3,12 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { Role } from './role.enum';
+import { PlanEntity } from '../plan/plan.entity';
 
 @Entity({ name: 'user' })
 export class UserEntity {
@@ -66,4 +68,7 @@ export class UserEntity {
     name: 'updated_at',
   })
   updatedAt!: Date;
+
+  @OneToMany(() => PlanEntity, (plan) => plan.owner)
+  plans: PlanEntity[];
 }

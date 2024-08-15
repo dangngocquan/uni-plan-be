@@ -13,7 +13,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from '../users/user.entity';
 import { Repository } from 'typeorm';
 import { ReqLoginDto } from './dto/req.login.dto';
-import * as bcrypt from 'bcrypt';
+import * as bcrypt from 'bcryptjs';
 import { ReqRefreshTokenDto } from './dto/req.refresh-token.dto';
 import { OAuth2Client, TokenPayload } from 'google-auth-library';
 import { ReqGoogleTokenDto } from './dto/req.gg-token.dto';

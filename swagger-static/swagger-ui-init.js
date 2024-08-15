@@ -731,6 +731,381 @@ window.onload = function() {
           ]
         }
       },
+      "/api/plan": {
+        "get": {
+          "operationId": "PlanController_get",
+          "parameters": [
+            {
+              "name": "order",
+              "required": false,
+              "in": "query",
+              "schema": {
+                "nullable": true,
+                "enum": [
+                  "ASC",
+                  "DESC"
+                ],
+                "type": "string"
+              }
+            },
+            {
+              "name": "page",
+              "required": false,
+              "in": "query",
+              "schema": {
+                "nullable": true,
+                "type": "number"
+              }
+            },
+            {
+              "name": "limit",
+              "required": false,
+              "in": "query",
+              "schema": {
+                "nullable": true,
+                "type": "number"
+              }
+            },
+            {
+              "name": "q",
+              "required": false,
+              "in": "query",
+              "schema": {
+                "nullable": true,
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Get all plan of user",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/PaginationPlanDto"
+                  }
+                }
+              }
+            }
+          },
+          "tags": [
+            "Plans"
+          ],
+          "security": [
+            {
+              "bearer": []
+            }
+          ]
+        },
+        "post": {
+          "operationId": "PlanController_create",
+          "parameters": [],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReqCreatePlanDto"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Create a plan",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ResPlanDto"
+                  }
+                }
+              }
+            }
+          },
+          "tags": [
+            "Plans"
+          ],
+          "security": [
+            {
+              "bearer": []
+            }
+          ]
+        }
+      },
+      "/api/plan/{planId}": {
+        "put": {
+          "operationId": "PlanController_update",
+          "parameters": [
+            {
+              "name": "planId",
+              "required": true,
+              "in": "path",
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReqUpdatePlanDto"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Update a plan",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ResPlanDto"
+                  }
+                }
+              }
+            }
+          },
+          "tags": [
+            "Plans"
+          ],
+          "security": [
+            {
+              "bearer": []
+            }
+          ]
+        },
+        "delete": {
+          "operationId": "PlanController_delete",
+          "parameters": [
+            {
+              "name": "planId",
+              "required": true,
+              "in": "path",
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Delete a plan",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ResPlanDto"
+                  }
+                }
+              }
+            }
+          },
+          "tags": [
+            "Plans"
+          ],
+          "security": [
+            {
+              "bearer": []
+            }
+          ]
+        }
+      },
+      "/api/plan-course": {
+        "get": {
+          "operationId": "PlanCourseController_get",
+          "parameters": [
+            {
+              "name": "order",
+              "required": false,
+              "in": "query",
+              "schema": {
+                "nullable": true,
+                "enum": [
+                  "ASC",
+                  "DESC"
+                ],
+                "type": "string"
+              }
+            },
+            {
+              "name": "page",
+              "required": false,
+              "in": "query",
+              "schema": {
+                "nullable": true,
+                "type": "number"
+              }
+            },
+            {
+              "name": "limit",
+              "required": false,
+              "in": "query",
+              "schema": {
+                "nullable": true,
+                "type": "number"
+              }
+            },
+            {
+              "name": "q",
+              "required": false,
+              "in": "query",
+              "schema": {
+                "nullable": true,
+                "type": "string"
+              }
+            },
+            {
+              "name": "planId",
+              "required": false,
+              "in": "query",
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Get all plan of user",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/PaginationPlanCourseDto"
+                  }
+                }
+              }
+            }
+          },
+          "tags": [
+            "Plan Courses"
+          ],
+          "security": [
+            {
+              "bearer": []
+            }
+          ]
+        }
+      },
+      "/api/plan-course/{planId}": {
+        "post": {
+          "operationId": "PlanCourseController_create",
+          "parameters": [
+            {
+              "name": "planId",
+              "required": true,
+              "in": "path",
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReqCreatePlanCourseDto"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Create course plan",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "tags": [
+            "Plan Courses"
+          ],
+          "security": [
+            {
+              "bearer": []
+            }
+          ]
+        },
+        "put": {
+          "operationId": "PlanCourseController_update",
+          "parameters": [
+            {
+              "name": "planId",
+              "required": true,
+              "in": "path",
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReqUpdatePlanCourseDto"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Update a plan course",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ResPlanCourseDto"
+                  }
+                }
+              }
+            }
+          },
+          "tags": [
+            "Plan Courses"
+          ],
+          "security": [
+            {
+              "bearer": []
+            }
+          ]
+        },
+        "delete": {
+          "operationId": "PlanCourseController_delete",
+          "parameters": [
+            {
+              "name": "planId",
+              "required": true,
+              "in": "path",
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Delete a plan course",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ResPlanCourseDto"
+                  }
+                }
+              }
+            }
+          },
+          "tags": [
+            "Plan Courses"
+          ],
+          "security": [
+            {
+              "bearer": []
+            }
+          ]
+        }
+      },
       "/api/admin/auth/login": {
         "post": {
           "operationId": "AdminAuthController_login",
@@ -1708,6 +2083,9 @@ window.onload = function() {
               "items": {
                 "$ref": "#/components/schemas/ResCourseRelationDto"
               }
+            },
+            "orderIndex": {
+              "type": "number"
             }
           },
           "required": [
@@ -1716,7 +2094,8 @@ window.onload = function() {
             "name",
             "credits",
             "groupId",
-            "prereqCourseRelations"
+            "prereqCourseRelations",
+            "orderIndex"
           ]
         },
         "PaginationCourseDto": {
@@ -1969,6 +2348,169 @@ window.onload = function() {
             "name",
             "role",
             "avatar"
+          ]
+        },
+        "ResPlanDto": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "name": {
+              "type": "string"
+            },
+            "createdAt": {
+              "format": "date-time",
+              "type": "string"
+            }
+          },
+          "required": [
+            "id",
+            "name",
+            "createdAt"
+          ]
+        },
+        "PaginationPlanDto": {
+          "type": "object",
+          "properties": {
+            "meta": {
+              "$ref": "#/components/schemas/PaginationMetaDto"
+            },
+            "links": {
+              "$ref": "#/components/schemas/PaginationLinkDto"
+            },
+            "items": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/ResPlanDto"
+              }
+            }
+          },
+          "required": [
+            "meta",
+            "links",
+            "items"
+          ]
+        },
+        "ReqCreatePlanDto": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "name"
+          ]
+        },
+        "ReqUpdatePlanDto": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "status": {
+              "type": "string",
+              "default": "COMPLETED"
+            }
+          },
+          "required": [
+            "name",
+            "status"
+          ]
+        },
+        "ResPlanCourseDto": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "planId": {
+              "type": "string"
+            },
+            "baseCourseId": {
+              "type": "string"
+            },
+            "fourPointGrade": {
+              "type": "number"
+            },
+            "letterGrade": {
+              "type": "number"
+            },
+            "status": {
+              "type": "string"
+            },
+            "baseCourse": {
+              "$ref": "#/components/schemas/ResCourseDto"
+            }
+          },
+          "required": [
+            "id",
+            "planId",
+            "baseCourseId",
+            "fourPointGrade",
+            "letterGrade",
+            "status",
+            "baseCourse"
+          ]
+        },
+        "PaginationPlanCourseDto": {
+          "type": "object",
+          "properties": {
+            "meta": {
+              "$ref": "#/components/schemas/PaginationMetaDto"
+            },
+            "links": {
+              "$ref": "#/components/schemas/PaginationLinkDto"
+            },
+            "items": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/ResPlanCourseDto"
+              }
+            }
+          },
+          "required": [
+            "meta",
+            "links",
+            "items"
+          ]
+        },
+        "ReqCreatePlanCourseDto": {
+          "type": "object",
+          "properties": {
+            "baseCourseIds": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "required": [
+            "baseCourseIds"
+          ]
+        },
+        "ReqUpdatePlanCourseDto": {
+          "type": "object",
+          "properties": {
+            "letterGrade": {
+              "type": "string",
+              "default": "A+",
+              "enum": [
+                "F",
+                "D",
+                "D+",
+                "C",
+                "C+",
+                "B",
+                "B+",
+                "A",
+                "A+"
+              ]
+            }
+          },
+          "required": [
+            "letterGrade"
           ]
         },
         "ReqCreateSchoolDto": {
