@@ -20,6 +20,8 @@ import { AuthMiddleware } from './modules/auth/middleware/auth.middleware';
 import { JwtModule } from '@nestjs/jwt';
 import { AuthModule } from './modules/auth/auth.module';
 import { AdminModule } from './modules/admin/admin.module';
+import { PlanModule } from './modules/plan/plan.module';
+import { PlanCourseModule } from './modules/plan-course/plan-course.module';
 
 @Module({
   imports: [
@@ -42,6 +44,14 @@ import { AdminModule } from './modules/admin/admin.module';
       ttl: 120000, // milliseconds
       max: 100, // maximum number of items in cache
     }),
+    JwtModule.registerAsync({
+      global: true,
+      useFactory: async (configService: ConfigService) => ({
+        global: true,
+        secret: configService.get<string>('JWT_SECRET'),
+      }),
+      inject: [ConfigService],
+    }),
     MailModule,
     UsersModule,
     SchoolModule,
@@ -53,6 +63,8 @@ import { AdminModule } from './modules/admin/admin.module';
     GradeConversionModule,
     JwtModule,
     AuthModule,
+    PlanModule,
+    PlanCourseModule,
     AdminModule,
   ],
   controllers: [AppController],

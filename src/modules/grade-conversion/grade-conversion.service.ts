@@ -61,7 +61,7 @@ export class GradeConversionService {
   async updateGradeConversionTables(
     tableId: UUID,
     dto: ReqCreateGradeConversionTableDto,
-  ): Promise<ReqCreateGradeConversionTableDto> {
+  ): Promise<ResGradeConversionTableDto> {
     // Find grade conversion table
     const tableEntity = await this.gradeConversionTableRepository
       .createQueryBuilder('table')
