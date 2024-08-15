@@ -47,7 +47,7 @@ export class AdminMajorController {
   async updateTable(
     @Param('tableId', ParseUUIDPipe) tableId: UUID,
     @Body() dto: ReqCreateGradeConversionTableDto,
-  ): Promise<ReqCreateGradeConversionTableDto> {
+  ): Promise<ResGradeConversionTableDto> {
     return this.gradeConversionService.updateGradeConversionTables(
       tableId,
       dto,

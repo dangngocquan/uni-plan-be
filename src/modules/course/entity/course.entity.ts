@@ -9,6 +9,7 @@ import {
 } from 'typeorm';
 import { GroupCourseEntity } from '../../group-course/entity/group-course.entity';
 import { CourseRelationEntity } from './course-relation.entity';
+import { PlanCourseEntity } from '../../plan-course/plan-course.entity';
 
 @Entity({ name: 'course' })
 export class CourseEntity {
@@ -54,4 +55,7 @@ export class CourseEntity {
 
   @OneToMany(() => CourseRelationEntity, (relation) => relation.course)
   prereqCourseRelations: CourseRelationEntity[];
+
+  @OneToMany(() => PlanCourseEntity, (planCourse) => planCourse.baseCourse)
+  planCourses: PlanCourseEntity[];
 }

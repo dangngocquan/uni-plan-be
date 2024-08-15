@@ -41,6 +41,7 @@ export class AuthController {
     type: ResTokenDto,
   })
   async login(@Body() dto: ReqLoginDto): Promise<ResTokenDto> {
+    console.log(dto);
     return await this.authService.login(dto);
   }
 
