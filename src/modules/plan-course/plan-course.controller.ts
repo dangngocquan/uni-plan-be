@@ -19,6 +19,7 @@ import { ResPlanCourseDto } from './dto/res.plan-course.dto';
 import { ReqUpdatePlanCourseDto } from './dto/req.update-plan-course.dto';
 import { PaginationPlanCourseDto } from './dto/res.page.plan-course.dto';
 import { PageOptionPlanCourseDto } from './dto/req.page-option.major.dto';
+import { ResCreatePlanCourseDto } from './dto/res.create-plan-course.dto';
 
 @Controller('plan-course')
 @ApiTags('Plan Courses')
@@ -48,7 +49,7 @@ export class PlanCourseController {
     @AuthUser() user: UserEntity,
     @Body() dto: ReqCreatePlanCourseDto,
     @Param('planId', ParseUUIDPipe) planId: UUID,
-  ): Promise<string> {
+  ): Promise<ResCreatePlanCourseDto> {
     return this.planCourseService.create(user, planId, dto);
   }
 

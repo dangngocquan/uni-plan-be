@@ -1,6 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
 import { PlanCourseEntity } from './plan-course.entity';
 import { ResPlanCourseDto } from './dto/res.plan-course.dto';
 import { UserEntity } from '../users/user.entity';
@@ -16,6 +15,8 @@ import {
 } from '../grade-conversion/grade-conversion.enum';
 import { plainToClass } from 'class-transformer';
 import { PageOptionPlanCourseDto } from './dto/req.page-option.major.dto';
+import { ResCreatePlanCourseDto } from './dto/res.create-plan-course.dto';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class PlanCourseService {
@@ -47,7 +48,7 @@ export class PlanCourseService {
     user: UserEntity,
     planId: UUID,
     dto: ReqCreatePlanCourseDto,
-  ): Promise<any> {
+  ): Promise<ResCreatePlanCourseDto> {
     const data = dto.baseCourseIds.map((id) => {
       return {
         planId,
@@ -55,6 +56,7 @@ export class PlanCourseService {
       };
     });
     await this.planCourseRepository.insert(data);
+    return plainToClass(ResPlanCourseDto, { planId: planId });
   }
 
   async update(
