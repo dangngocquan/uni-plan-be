@@ -35,7 +35,7 @@ export class MajorService {
         'major.name': dto.order === OrderType.ASC ? 'ASC' : 'DESC',
       });
     if (dto.schoolId !== undefined) {
-      queryBuider.where(`major.schoolId = '${dto.schoolId}'`);
+      queryBuider.andWhere(`major.schoolId = '${dto.schoolId}'`);
     }
     const { items, meta, links } = await paginate(queryBuider, {
       page: dto.page,

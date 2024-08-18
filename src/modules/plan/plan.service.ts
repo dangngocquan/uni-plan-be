@@ -27,6 +27,7 @@ export class PlanService {
     const queryBuider = this.planRepository
       .createQueryBuilder('plan')
       .where(`plan.ownerId = '${user.id}'`)
+      .andWhere(`LOWER(plan.name) LIKE '%${dto.q.toLowerCase().trim()}%'`)
       .andWhere(`plan.status = '${PlanStatus.COMPLETED}'`);
 
     const { items, meta, links } = await paginate(queryBuider, {
