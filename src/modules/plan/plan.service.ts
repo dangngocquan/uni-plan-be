@@ -135,7 +135,9 @@ export class PlanService {
       currentCPA: 0,
       grades: [],
     };
-    const gradesObject = {};
+    const gradesObject = {
+      ['Not Completed']: 0,
+    };
     Object.values(LetterGrade).forEach((g) => (gradesObject[g] = 0));
     entity.courses.forEach((c) => {
       summary.totalCourses++;
@@ -146,6 +148,8 @@ export class PlanService {
         summary.currentCPA +=
           Number(c.fourPointGrade) * Number(c.baseCourse.credits);
         gradesObject[c.letterGrade] += 1;
+      } else {
+        gradesObject['Not Completed'] += 1;
       }
     });
     summary.currentCPA =
