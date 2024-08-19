@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { PlanCourseEntity } from './plan-course.entity';
 import { ResPlanCourseDto } from './dto/res.plan-course.dto';
@@ -17,6 +21,8 @@ import { plainToClass } from 'class-transformer';
 import { PageOptionPlanCourseDto } from './dto/req.page-option.major.dto';
 import { ResCreatePlanCourseDto } from './dto/res.create-plan-course.dto';
 import { Repository } from 'typeorm';
+import { PlanCourseStatus } from '../plan/plan.enum';
+import { AuthService } from '../auth/auth.service';
 
 @Injectable()
 export class PlanCourseService {
@@ -26,12 +32,19 @@ export class PlanCourseService {
 
     @InjectRepository(CourseEntity)
     private readonly courseRepository: Repository<CourseEntity>,
+
+    private readonly authService: AuthService,
   ) {}
 
   async findAll(
     user: UserEntity,
     dto: PageOptionPlanCourseDto,
   ): Promise<PaginationPlanCourseDto> {
+    if (!(await this.authService.isOwnerPlanCourse(user, dto.planId))) {
+      throw new UnauthorizedException({
+        message: 'Unauthorized: You are not owner of this plan',
+      });
+    }
     const queryBuider = this.planCourseRepository
       .createQueryBuilder('planCourse')
       .where(`planCourse.planId = '${dto.planId}'`);
@@ -64,6 +77,11 @@ export class PlanCourseService {
     planCourseId: UUID,
     dto: ReqUpdatePlanCourseDto,
   ): Promise<ResPlanCourseDto> {
+    if (!(await this.authService.isOwnerPlanCourse(user, planCourseId))) {
+      throw new UnauthorizedException({
+        message: 'Unauthorized: You are not owner of this plan course',
+      });
+    }
     let entity = await this.planCourseRepository
       .createQueryBuilder('planCourse')
       .where(`planCourse.id = '${planCourseId}'`)
@@ -73,11 +91,19 @@ export class PlanCourseService {
         message: 'Plan Course not found',
       });
     }
-    entity.letterGrade = dto.letterGrade;
-    entity.fourPointGrade = CONVERT_LETTER_GRADE_TO_FOUR_POINT_GRADE[
-      dto.letterGrade
-    ] as FourPointGrade;
-    console.log(entity.fourPointGrade);
+    if (dto.letterGrade) {
+      entity.letterGrade = dto.letterGrade;
+      entity.fourPointGrade = CONVERT_LETTER_GRADE_TO_FOUR_POINT_GRADE[
+        dto.letterGrade
+      ] as FourPointGrade;
+      if (entity.fourPointGrade !== FourPointGrade.F) {
+        entity.status = PlanCourseStatus.COMPLETED;
+      }
+    } else {
+      entity.letterGrade = null;
+      entity.fourPointGrade = null;
+      entity.status = entity.status = PlanCourseStatus.NOT_COMPLETED;
+    }
 
     entity = await this.planCourseRepository.save(entity);
     return plainToClass(ResPlanCourseDto, entity);
@@ -87,6 +113,11 @@ export class PlanCourseService {
     user: UserEntity,
     planCourseId: UUID,
   ): Promise<ResPlanCourseDto> {
+    if (!(await this.authService.isOwnerPlanCourse(user, planCourseId))) {
+      throw new UnauthorizedException({
+        message: 'Unauthorized: You are not owner of this plan course',
+      });
+    }
     const entity = await this.planCourseRepository
       .createQueryBuilder('planCourse')
       .where(`planCourse.id = '${planCourseId}'`)
