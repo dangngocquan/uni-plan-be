@@ -910,6 +910,41 @@ window.onload = function() {
           ]
         }
       },
+      "/api/plan/detail": {
+        "get": {
+          "operationId": "PlanController_getPlanDetails",
+          "parameters": [
+            {
+              "name": "id",
+              "required": true,
+              "in": "query",
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Get plan details",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ResPlanDetailDto"
+                  }
+                }
+              }
+            }
+          },
+          "tags": [
+            "Plans"
+          ],
+          "security": [
+            {
+              "bearer": []
+            }
+          ]
+        }
+      },
       "/api/plan-course": {
         "get": {
           "operationId": "PlanCourseController_get",
@@ -2454,6 +2489,86 @@ window.onload = function() {
             "baseCourse"
           ]
         },
+        "GradeStatus": {
+          "type": "object",
+          "properties": {
+            "grade": {
+              "type": "string"
+            },
+            "count": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "grade",
+            "count"
+          ]
+        },
+        "ResPlanSummary": {
+          "type": "object",
+          "properties": {
+            "totalCourses": {
+              "type": "number"
+            },
+            "totalCredits": {
+              "type": "number"
+            },
+            "numberCoursesCompleted": {
+              "type": "number"
+            },
+            "numberCreditsCompleted": {
+              "type": "number"
+            },
+            "currentCPA": {
+              "type": "number"
+            },
+            "grades": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/GradeStatus"
+              }
+            }
+          },
+          "required": [
+            "totalCourses",
+            "totalCredits",
+            "numberCoursesCompleted",
+            "numberCreditsCompleted",
+            "currentCPA",
+            "grades"
+          ]
+        },
+        "ResPlanDetailDto": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "name": {
+              "type": "string"
+            },
+            "createdAt": {
+              "format": "date-time",
+              "type": "string"
+            },
+            "courses": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/ResPlanCourseDto"
+              }
+            },
+            "summary": {
+              "$ref": "#/components/schemas/ResPlanSummary"
+            }
+          },
+          "required": [
+            "id",
+            "name",
+            "createdAt",
+            "courses",
+            "summary"
+          ]
+        },
         "PaginationPlanCourseDto": {
           "type": "object",
           "properties": {
@@ -2495,18 +2610,7 @@ window.onload = function() {
           "properties": {
             "letterGrade": {
               "type": "string",
-              "default": "A+",
-              "enum": [
-                "F",
-                "D",
-                "D+",
-                "C",
-                "C+",
-                "B",
-                "B+",
-                "A",
-                "A+"
-              ]
+              "default": "A+"
             }
           },
           "required": [
