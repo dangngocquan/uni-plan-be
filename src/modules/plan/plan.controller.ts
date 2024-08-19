@@ -18,6 +18,8 @@ import { ResPlanDto } from './dto/res.plan.dto';
 import { ReqCreatePlanDto } from './dto/req.create-plan.dto';
 import { UUID } from 'crypto';
 import { ReqUpdatePlanDto } from './dto/req.update-plan.dto';
+import { ResPlanDetailDto } from './dto/res.plan-detail.dto';
+import { ReqPlanDetailDto } from './dto/req.plan-detail.dto';
 
 @Controller('plan')
 @ApiTags('Plans')
@@ -75,5 +77,18 @@ export class PlanController {
     @Param('planId') id: UUID,
   ): Promise<ResPlanDto> {
     return this.planService.delete(user, id);
+  }
+
+  @Get('detail')
+  @Auth()
+  @ApiOkResponse({
+    description: 'Get plan details',
+    type: ResPlanDetailDto,
+  })
+  async getPlanDetails(
+    @AuthUser() user: UserEntity,
+    @Query() dto: ReqPlanDetailDto,
+  ): Promise<ResPlanDetailDto> {
+    return this.planService.getPlanDetails(user, dto.id);
   }
 }

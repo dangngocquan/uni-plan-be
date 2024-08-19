@@ -24,6 +24,9 @@ import { ReqResetPasswordDto } from './dto/req.reset-password.dto';
 import { CACHE_MANAGER, Cache } from '@nestjs/cache-manager';
 import { SentMessageInfo } from 'nodemailer';
 import { ReqVerifyEmailDto } from './dto/req.verify-email.dto';
+import { PlanEntity } from '../plan/plan.entity';
+import { PlanCourseEntity } from '../plan-course/plan-course.entity';
+import { UUID } from 'crypto';
 
 @Injectable()
 export class AuthService {
@@ -36,6 +39,10 @@ export class AuthService {
     private readonly mailService: MailService,
     @Inject(CACHE_MANAGER)
     private cacheManager: Cache,
+    @InjectRepository(PlanEntity)
+    private readonly planRepository: Repository<PlanEntity>,
+    @InjectRepository(PlanCourseEntity)
+    private readonly planCourseRepository: Repository<PlanCourseEntity>,
   ) {}
 
   async signup(dto: ReqSignUpDto): Promise<ResMailDto> {
@@ -245,6 +252,29 @@ export class AuthService {
 
   async getMe(accessToken: string) {
     return this.verifyAccessToken(accessToken);
+  }
+
+  async isOwnerPlan(user: UserEntity, planId: UUID): Promise<boolean> {
+    const plan = await this.planRepository.findOneBy({ id: planId });
+    if (!plan) {
+      return false;
+    }
+    return user.id === plan.ownerId;
+  }
+
+  async isOwnerPlanCourse(
+    user: UserEntity,
+    planCourseId: UUID,
+  ): Promise<boolean> {
+    const planCourse = await this.planCourseRepository
+      .createQueryBuilder('planCourse')
+      .where(`planCourse.id = '${planCourseId}'`)
+      .leftJoinAndSelect('planCourse.plan', 'plan')
+      .getOne();
+    if (!planCourse) {
+      return false;
+    }
+    return user.id === planCourse.plan.ownerId;
   }
 }
 
