@@ -7,7 +7,6 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { GradeConversionTableEntity } from './grade-conversion-table.entity';
-import { FourPointGrade, LetterGrade } from '../grade-conversion.enum';
 
 @Entity({ name: 'grade_conversion' })
 export class GradeConversionEntity {
@@ -39,17 +38,15 @@ export class GradeConversionEntity {
     name: 'four_point_grade',
     type: 'float8',
     nullable: true,
-    enum: FourPointGrade,
   })
-  fourPointGrade: FourPointGrade;
+  fourPointGrade: number;
 
   @Column({
     name: 'letter_grade',
     type: 'varchar',
     nullable: true,
-    enum: LetterGrade,
   })
-  letterGrade: LetterGrade;
+  letterGrade: string;
 
   @Column({
     name: 'conversion_table_id',
