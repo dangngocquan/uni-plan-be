@@ -19,9 +19,9 @@ import { GradeConversionService } from '../../grade-conversion/grade-conversion.
 import { ResGradeConversionTableDto } from '../../grade-conversion/dto/res.conversion-table.dto';
 import { ReqCreateGradeConversionTableDto } from '../../grade-conversion/dto/req.create-table.dto';
 
-@Controller('admin/grade-conversion')
 @ApiTags('Admin Grade Conversion')
-export class AdminMajorController {
+@Controller('admin/grade-conversion')
+export class AdminGradeConversionController {
   constructor(
     private readonly gradeConversionService: GradeConversionService,
   ) {}

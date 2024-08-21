@@ -1786,6 +1786,120 @@ window.onload = function() {
             }
           ]
         }
+      },
+      "/api/admin/grade-conversion/table": {
+        "post": {
+          "operationId": "AdminGradeConversionController_createTable",
+          "parameters": [],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReqCreateGradeConversionTableDto"
+                }
+              }
+            }
+          },
+          "responses": {
+            "201": {
+              "description": "Create a grade conversion table",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ResGradeConversionTableDto"
+                  }
+                }
+              }
+            }
+          },
+          "tags": [
+            "Admin Grade Conversion"
+          ],
+          "security": [
+            {
+              "bearer": []
+            }
+          ]
+        }
+      },
+      "/api/admin/grade-conversion/table/{tableId}": {
+        "put": {
+          "operationId": "AdminGradeConversionController_updateTable",
+          "parameters": [
+            {
+              "name": "tableId",
+              "required": true,
+              "in": "path",
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReqCreateGradeConversionTableDto"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Update a grade conversion table",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ResGradeConversionTableDto"
+                  }
+                }
+              }
+            }
+          },
+          "tags": [
+            "Admin Grade Conversion"
+          ],
+          "security": [
+            {
+              "bearer": []
+            }
+          ]
+        },
+        "delete": {
+          "operationId": "AdminGradeConversionController_deleteGradeConversionTable",
+          "parameters": [
+            {
+              "name": "tableId",
+              "required": true,
+              "in": "path",
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Delete a grade conversion table",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ResDeleteResultDto"
+                  }
+                }
+              }
+            }
+          },
+          "tags": [
+            "Admin Grade Conversion"
+          ],
+          "security": [
+            {
+              "bearer": []
+            }
+          ]
+        }
       }
     },
     "info": {
@@ -2538,6 +2652,36 @@ window.onload = function() {
             "grades"
           ]
         },
+        "ResponseGradeCPAStatus": {
+          "type": "object",
+          "properties": {
+            "minCPA": {
+              "type": "number"
+            },
+            "minRoundCPA": {
+              "type": "number"
+            },
+            "maxCPA": {
+              "type": "number"
+            },
+            "maxRoundCPA": {
+              "type": "number"
+            },
+            "calculatorCPA": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "required": [
+            "minCPA",
+            "minRoundCPA",
+            "maxCPA",
+            "maxRoundCPA",
+            "calculatorCPA"
+          ]
+        },
         "ResPlanDetailDto": {
           "type": "object",
           "properties": {
@@ -2559,6 +2703,9 @@ window.onload = function() {
             },
             "summary": {
               "$ref": "#/components/schemas/ResPlanSummary"
+            },
+            "cpaStatus": {
+              "$ref": "#/components/schemas/ResponseGradeCPAStatus"
             }
           },
           "required": [
@@ -2566,7 +2713,8 @@ window.onload = function() {
             "name",
             "createdAt",
             "courses",
-            "summary"
+            "summary",
+            "cpaStatus"
           ]
         },
         "PaginationPlanCourseDto": {
@@ -2866,6 +3014,66 @@ window.onload = function() {
           },
           "required": [
             "prereqCourseCode"
+          ]
+        },
+        "ReqCreateGradeConversionDto": {
+          "type": "object",
+          "properties": {
+            "fromTenPointGrade": {
+              "type": "number"
+            },
+            "toTenPointGrade": {
+              "type": "number"
+            },
+            "labelTenPointGrade": {
+              "type": "string"
+            },
+            "fourPointGrade": {
+              "type": "number"
+            },
+            "letterGrade": {
+              "type": "string",
+              "enum": [
+                "F",
+                "D",
+                "D+",
+                "C",
+                "C+",
+                "B",
+                "B+",
+                "A",
+                "A+"
+              ]
+            }
+          },
+          "required": [
+            "fromTenPointGrade",
+            "toTenPointGrade",
+            "labelTenPointGrade",
+            "fourPointGrade",
+            "letterGrade"
+          ]
+        },
+        "ReqCreateGradeConversionTableDto": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "type": {
+              "type": "string"
+            },
+            "gradeConversions": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/ReqCreateGradeConversionDto"
+              }
+            }
+          },
+          "required": [
+            "name",
+            "type",
+            "gradeConversions"
           ]
         }
       }

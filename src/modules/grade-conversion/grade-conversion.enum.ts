@@ -10,6 +10,14 @@ export enum LetterGrade {
   A_PLUS = 'A+',
 }
 
+export enum LetterGradeCongratulations {
+  EXCELLENT = 'EXCELLENT',
+  VERY_GOOD = 'VERY_GOOD',
+  GOOD = 'GOOD',
+  ORDINARY = 'ORDINARY',
+  POOR = 'POOR',
+}
+
 export enum FourPointGrade {
   F = 0,
   D = 1.0,
@@ -33,3 +41,8 @@ export const CONVERT_LETTER_GRADE_TO_FOUR_POINT_GRADE = {
   A: 3.7,
   'A+': 4.0,
 };
+
+export enum GradeConversionType {
+  GRADE = 'GRADE',
+  CONGRADUATION = 'CONGRADUATION',
+}
