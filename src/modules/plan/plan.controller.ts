@@ -88,7 +88,7 @@ export class PlanController {
   async getPlanDetails(
     @AuthUser() user: UserEntity,
     @Query() dto: ReqPlanDetailDto,
-  ): Promise<ResPlanDetailDto> {
+  ): Promise<any> {
     return this.planService.getPlanDetails(user, dto.id);
   }
 }

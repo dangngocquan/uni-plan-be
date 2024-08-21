@@ -119,7 +119,6 @@ export class CourseService {
     courseId: UUID,
     dto: ReqCreateCourseRelationDto,
   ): Promise<ResCourseDto> {
-    console.log({ dto });
     const queryBuider = this.courseRepository
       .createQueryBuilder('course')
       .where(`course.id = '${courseId}'`);

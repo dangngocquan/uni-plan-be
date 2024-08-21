@@ -11,8 +11,8 @@ import { SchoolModule } from '../school/school.module';
 import { MajorModule } from '../major/major.module';
 import { CourseModule } from '../course/course.module';
 import { GroupCourseModule } from '../group-course/group-course.module';
-import { GradeConversionController } from '../grade-conversion/grade-conversion.controller';
 import { GradeConversionModule } from '../grade-conversion/grade-conversion.module';
+import { AdminGradeConversionController } from './controllers/admin.grade-conversion.controller';
 
 @Module({
   imports: [
@@ -29,7 +29,7 @@ import { GradeConversionModule } from '../grade-conversion/grade-conversion.modu
     AdminSchoolController,
     AdminMajorController,
     AdminCourseController,
-    GradeConversionController,
+    AdminGradeConversionController,
   ],
   providers: [AdminService],
   exports: [AdminService],
